@@ -10,26 +10,19 @@
 
 # tasklist
 
-1 - color palette
-for now, let's consider the following:
- #FFFFFF 
- #FFE100
- #FF6403
- #494341
- #030E3C
+1 - color palette [~]  
+for now, let's consider the following:  
+ #FFFFFF   
+ #FFE100  
+ #FF6403  
+ #494341  
+ #030E3C  
+ more have been added, look into global styles  
 
-2 - get models
+2 - get models  [x]  
 
-3 - design scene
-4 - make a formal landing page
+3 - design scene [~]  
+4 - make a formal landing page [x]  
 
-
-# instals made
-
-```bash
-npm i three
-npm install tailwindcss @tailwindcss/postcss postcss
-
-npm install lucide-react
-npm i radix-ui/react-slot class-variance-authority
-```
+5 - iterate [ ] ↴  
+↥––––––––––––
