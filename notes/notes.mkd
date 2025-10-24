@@ -11,6 +11,25 @@
 # tasklist
 
 1 - color palette
+for now, let's consider the following:
+ #FFFFFF 
+ #FFE100
+ #FF6403
+ #494341
+ #030E3C
+
 2 - get models
+
 3 - design scene
 4 - make a formal landing page
+
+
+# instals made
+
+```bash
+npm i three
+npm install tailwindcss @tailwindcss/postcss postcss
+
+npm install lucide-react
+npm i radix-ui/react-slot class-variance-authority
+```
