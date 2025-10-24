@@ -1,10 +1,10 @@
 "use client"
 import { useState } from 'react';
 import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/utils/card';
-import { Input } from '@/utils/input';
-import { Textarea } from '@/utils/textarea';
-import { Button } from '@/utils/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/card';
+import { Input } from '@/components/input';
+import { Textarea } from '@/components/textarea';
+import { Button } from '@/components/button';
 import { toast } from 'sonner';
 
 export default function ContactPage() {

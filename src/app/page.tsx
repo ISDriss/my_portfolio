@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
-import { Button } from '@/utils/button';
+import { Button } from '@/components/button';
 
 export default function HomePage() {
   return (
