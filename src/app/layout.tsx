@@ -19,10 +19,10 @@ export default function RootLayout({
         <div className="min-h-screen bg-white">
           <Navigation />
           <main>{children}</main>
-          <footer className="bg-navy text-white py-8">
+          <footer className="bg-electric text-white py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <p className="text-white/80">
-                © {new Date().getFullYear()} Your Name. All rights reserved.
+                © {new Date().getFullYear()} Ilian SEBTI. All rights reserved.
               </p>
               <p className="text-white/60 mt-2 text-sm">
                 Built with Next.js & Tailwind CSS

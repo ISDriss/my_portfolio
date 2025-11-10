@@ -26,11 +26,11 @@ export function Navigation() {
   };
 
   return (
-    <nav className="bg-navy sticky top-0 z-50 shadow-lg">
+    <nav className="bg-electric sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-yellow rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-cyan rounded-lg flex items-center justify-center">
               <span className="text-navy">EP</span>
             </div>
           </Link>
@@ -43,8 +43,8 @@ export function Navigation() {
                 href={item.path}
                 className={`transition-colors duration-200 ${
                   isActive(item.path)
-                    ? 'text-yellow'
-                    : 'text-white hover:text-yellow'
+                    ? 'text-orange'
+                    : 'text-white hover:text-orange'
                 }`}
               >
                 {item.name}
