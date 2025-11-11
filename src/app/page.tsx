@@ -19,7 +19,8 @@ export default function HomePage() {
                 <span className="block text-orange mt-2">Ilian SEBTI</span>
               </h1>
               <p className="text-xl text-white/80">
-                Passionate about prototyping new tools and innovative solutions.
+                Passionate about prototyping new tools and innovative solutions.  
+                For a better tommorrow.
               </p>
               <div className="flex gap-4 pt-4">
                 <Link href="/projects">

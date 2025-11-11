@@ -29,6 +29,7 @@
   --yellow: #FFE100;
   --orange: #FF6403;
   --navy: #030E3C;
+  --blue: #2c82f1;
   --gray: #3a3838;
   --purple: #77178d;
   --violet: rgb(185, 38, 205);
@@ -114,6 +115,7 @@
   --color-yellow: var(--yellow);
   --color-orange: var(--orange);
   --color-navy: var(--navy);
+  --color-blue: var(--blue);
   --color-gray: var(--gray);
   --color-purple: var(--purple);
   --color-green: var(--green);

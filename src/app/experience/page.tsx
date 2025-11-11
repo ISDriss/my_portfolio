@@ -6,51 +6,36 @@ export default function ExperiencePage() {
   const experiences = [
     {
       id: 1,
-      company: 'Tech Innovations Inc.',
-      position: 'Senior Software Engineer',
-      location: 'San Francisco, CA',
-      period: 'Jan 2022 - Present',
+      company: 'Canal+ International',
+      position: 'Backend Developer Intern',
+      location: 'Puteaux, France',
+      period: 'June - Aug 2023',
       type: 'Full-time',
       color: 'purple',
       achievements: [
-        'Led development of microservices architecture serving 1M+ daily active users',
-        'Reduced application load time by 40% through performance optimization',
-        'Mentored 5 junior developers and conducted technical interviews',
-        'Implemented CI/CD pipelines reducing deployment time by 60%',
+        'developed and tested API endpoints for Canal+ International services',
+        'got introduced to git, API swaggers and Django REST framework',
+        'worked in an Agile environment and participated in daily stand-ups',
+        'collaborated with cross-functional teams to ensure seamless integration',
       ],
-      technologies: ['React', 'Node.js', 'AWS', 'Kubernetes', 'PostgreSQL'],
+      technologies: ['Django REST', 'git', 'Postman'],
     },
     {
       id: 2,
-      company: 'Digital Solutions Co.',
-      position: 'Software Engineer',
-      location: 'Remote',
-      period: 'Mar 2020 - Dec 2021',
+      company: 'Vallourec',
+      position: 'Software Developper Intern',
+      location: 'Meudon, France',
+      period: 'May - Sept 2025',
       type: 'Full-time',
-      color: 'green',
+      color: 'blue',
       achievements: [
-        'Developed and maintained 15+ client-facing web applications',
-        'Collaborated with cross-functional teams in Agile environment',
-        'Improved code quality through comprehensive testing strategies',
-        'Integrated third-party APIs and payment processing systems',
+        'Creation of a GUI app from scratch for the verification of installation of pipe connections on oil rigs',
+        'management & implementation of customer feedback to enhance application functionality',
+        'developed and distributed 20+ versions of the app to field technicians',
+        'collaborated with multiple teams regarding app design, security, marketing and deployment',
+        'Introduction to Qt framework and PyQt5/PySide6 for GUI development',
       ],
-      technologies: ['Vue.js', 'Python', 'Django', 'MongoDB', 'Docker'],
-    },
-    {
-      id: 3,
-      company: 'StartUp Ventures',
-      position: 'Junior Developer',
-      location: 'New York, NY',
-      period: 'Jun 2018 - Feb 2020',
-      type: 'Full-time',
-      color: 'orange',
-      achievements: [
-        'Built responsive web applications from design mockups',
-        'Participated in daily stand-ups and sprint planning sessions',
-        'Contributed to open-source projects and internal tools',
-        'Gained expertise in modern JavaScript frameworks and tools',
-      ],
-      technologies: ['JavaScript', 'React', 'Express', 'MySQL', 'Git'],
+      technologies: ['Python', 'Qt framework',],
     },
   ];
 
@@ -59,6 +44,7 @@ export default function ExperiencePage() {
       purple: { border: 'border-purple', bg: 'bg-purple/5', text: 'text-purple' },
       green: { border: 'border-green', bg: 'bg-green/5', text: 'text-green' },
       orange: { border: 'border-orange', bg: 'bg-orange/5', text: 'text-orange' },
+      blue: { border: 'border-blue', bg: 'bg-blue/5', text: 'text-blue' },
     };
     return colorMap[color] || colorMap.purple;
   };
@@ -69,12 +55,15 @@ export default function ExperiencePage() {
         <div className="text-center mb-16">
           <h1 className="mb-4 text-navy">Work Experience</h1>
           <p className="text-xl text-gray/80 max-w-2xl mx-auto">
-            My professional journey in software engineering, building scalable applications and solving complex problems.
+            My professional journey.
           </p>
         </div>
 
         <div className="space-y-8">
-          {experiences.map((exp, index) => {
+          {experiences
+            .slice()
+            .reverse()
+            .map((exp, index) => {
             const colors = getColorClasses(exp.color);
             return (
               <Card key={exp.id} className={`border-l-4 ${colors.border} hover:shadow-xl transition-shadow`}>
