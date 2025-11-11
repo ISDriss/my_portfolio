@@ -4,19 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/card';
 import { Badge } from '@/components/badge';
 
 export default function ResumePage() {
+  const resumeUrl = '/resume.pdf';
   const skills = {
-    'Frontend': ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js', 'Redux'],
-    'Backend': ['Node.js', 'Python', 'Express', 'Django', 'FastAPI', 'GraphQL'],
-    'Database': ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL', 'DynamoDB'],
-    'DevOps': ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'Terraform', 'Jenkins'],
+    'Frontend': ['Next.js', 'Tailwind CSS', 'HTML/CSS/JS'],
+    'Backend': ['Python', 'Django'],
+    'Database': ['MySQL'],
+    'DevOps': ['Docker', 'AWS', 'CI/CD'],
     'Tools': ['Git', 'VS Code', 'Jira', 'Figma', 'Postman', 'Linux'],
   };
 
   const certifications = [
-    'AWS Certified Solutions Architect',
-    'Google Cloud Professional Developer',
-    'MongoDB Certified Developer',
-    'Certified Kubernetes Administrator',
+    'Design Thinker - dthinking academy (2022)',
   ];
 
   return (
@@ -28,9 +26,11 @@ export default function ResumePage() {
           <p className="text-xl text-gray/80 mb-6">
             Download my complete resume or view the summary below
           </p>
-          <Button className="bg-orange hover:bg-orange/90 text-white">
-            <Download className="w-4 h-4 mr-2" />
-            Download PDF
+          <Button asChild className="bg-orange hover:bg-orange/90 text-white">
+            <a href={resumeUrl} download aria-label="Download my resume as PDF">
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
+            </a>
           </Button>
         </div>
 
@@ -44,12 +44,12 @@ export default function ResumePage() {
           </CardHeader>
           <CardContent>
             <p className="text-gray/80 leading-relaxed">
-              Experienced Software Engineer with 5+ years of expertise in full-stack development, 
-              specializing in building scalable web applications and microservices architectures. 
-              Proven track record of delivering high-quality solutions using modern technologies 
-              including React, Node.js, and cloud platforms. Strong problem-solving skills and 
-              passion for writing clean, maintainable code. Experienced in leading development 
-              teams and mentoring junior developers.
+              Creative and forward-thinking engineering student at ESILV – Léonard de Vinci Engineering School (France),  
+              majoring in Creative Technology, with international experience in Electrical Engineering at Hanyang University (Seoul).  
+              Driven by a strong appetite for R&D, prototyping, and innovation,  
+              combining technical rigor with a maker mindset to bring ideas from concept to functional prototype.  
+              Hands-on experience in software development, data science, and embedded systems.  
+              Skilled in Python, C#, JavaScript, and C++, and comfortable bridging hardware and software to design practical, high-value solutions.
             </p>
           </CardContent>
         </Card>
@@ -94,50 +94,22 @@ export default function ResumePage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
+              
               <div>
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h4 className="text-navy">Senior Software Engineer</h4>
-                    <p className="text-gray/70">Tech Innovations Inc.</p>
-                  </div>
-                  <Badge className="bg-purple/10 text-purple border-0">2022 - Present</Badge>
-                </div>
-                <ul className="space-y-1 text-gray/80">
-                  <li>• Led development of microservices architecture serving 1M+ users</li>
-                  <li>• Improved application performance by 40%</li>
-                  <li>• Mentored team of 5 developers</li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h4 className="text-navy">Software Engineer</h4>
-                    <p className="text-gray/70">Digital Solutions Co.</p>
+                    <h4 className="text-navy">Junior Developper</h4>
+                    <p className="text-gray/70">Vallourec</p>
                   </div>
                   <Badge className="bg-green/10 text-green border-0">2020 - 2021</Badge>
                 </div>
                 <ul className="space-y-1 text-gray/80">
-                  <li>• Developed 15+ client-facing applications</li>
-                  <li>• Implemented comprehensive testing strategies</li>
-                  <li>• Integrated payment processing systems</li>
+                  <li>• Created a tool from scratch for industrial sites in record time as CI/CD</li>
                 </ul>
               </div>
+              
+              {/*Add more experience entries as needed*/}
 
-              <div>
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h4 className="text-navy">Junior Developer</h4>
-                    <p className="text-gray/70">StartUp Ventures</p>
-                  </div>
-                  <Badge className="bg-orange/10 text-orange border-0">2018 - 2020</Badge>
-                </div>
-                <ul className="space-y-1 text-gray/80">
-                  <li>• Built responsive web applications</li>
-                  <li>• Contributed to open-source projects</li>
-                  <li>• Mastered modern JavaScript frameworks</li>
-                </ul>
-              </div>
             </div>
           </CardContent>
         </Card>
@@ -153,12 +125,9 @@ export default function ResumePage() {
             </CardHeader>
             <CardContent>
               <div>
-                <h4 className="text-navy">Bachelor of Science</h4>
-                <p className="text-gray/70 mb-1">Computer Science</p>
-                <p className="text-gray/70 mb-2">University Name, 2014 - 2018</p>
-                <Badge variant="outline" className="border-yellow/50 text-yellow">
-                  GPA: 3.8/4.0
-                </Badge>
+                <h4 className="text-navy">Master of Engineering</h4>
+                <p className="text-gray/70 mb-1">Computer science</p>
+                <p className="text-gray/70 mb-2">ESILV, 2021 - 2026</p>
               </div>
             </CardContent>
           </Card>

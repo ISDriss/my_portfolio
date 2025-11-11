@@ -35,7 +35,7 @@ export default function ExperiencePage() {
         'collaborated with multiple teams regarding app design, security, marketing and deployment',
         'Introduction to Qt framework and PyQt5/PySide6 for GUI development',
       ],
-      technologies: ['Python', 'Qt framework',],
+      technologies: ['Python', 'Qt framework'],
     },
   ];
 
@@ -119,11 +119,10 @@ export default function ExperiencePage() {
           })}
         </div>
 
-        <div className="mt-16 p-8 bg-gradient-to-r from-navy to-gray rounded-xl text-center">
+        <div className="mt-16 p-8 bg-gradient-to-r from-navy to-electric rounded-xl text-center">
           <h3 className="mb-2 text-white">Education</h3>
-          <p className="text-white/90 mb-2">Bachelor of Science in Computer Science</p>
-          <p className="text-white/70 mb-1">University Name, 2014 - 2018</p>
-          <p className="text-white/70">GPA: 3.8/4.0</p>
+          <p className="text-white/90 mb-2">Master of Engineering</p>
+          <p className="text-white/70 mb-1">ESILV, 2021 - 2026</p>
         </div>
       </div>
     </div>
