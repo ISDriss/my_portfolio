@@ -15,6 +15,7 @@ export default function ResumePage() {
 
   const certifications = [
     'Design Thinker - dthinking academy (2022)',
+    'Amateur Radio Operator - ANFR (2025)'
   ];
 
   return (

@@ -1,73 +1,50 @@
 "use client"
-import { useState } from 'react';
-import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, MapPin, Phone, Github, Linkedin, Sparkles, Clock3 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/card';
-import { Input } from '@/components/input';
-import { Textarea } from '@/components/textarea';
-import { Button } from '@/components/button';
-import { toast } from 'sonner';
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success('Message sent successfully! I\'ll get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const contactInfo = [
     {
       icon: Mail,
       label: 'Email',
-      value: 'your.email@example.com',
-      href: 'mailto:your.email@example.com',
+      value: 'ilian.sebti@gmail.com',
+      href: 'mailto:ilian.sebti@gmail.com',
       color: 'purple',
     },
     {
       icon: Phone,
       label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+33 6 33 94 24 58',
+      href: 'tel:+33633942458',
       color: 'green',
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'San Francisco, CA',
-      href: '#',
+      value: 'Garches, France',
+      href: 'https://maps.google.com/?q=Garches%2C%20France',
       color: 'orange',
-    },
-  ];
-
-  const socialLinks = [
-    {
-      icon: Github,
-      label: 'GitHub',
-      href: 'https://github.com',
-      color: 'hover:bg-purple',
     },
     {
       icon: Linkedin,
-      label: 'LinkedIn',
-      href: 'https://linkedin.com',
-      color: 'hover:bg-green',
+      label: 'Linkedin',
+      value: 'linkedin.com/in/ilian-sebti',
+      href: 'https://www.linkedin.com/in/ilian-sebti',
+      color: 'blue'
     },
     {
-      icon: Twitter,
-      label: 'Twitter',
-      href: 'https://twitter.com',
-      color: 'hover:bg-orange',
+      icon: Github,
+      label: 'GitHub',
+      value: 'github.com/ISDriss',
+      href: 'https://github.com/ISDriss',
+      color: 'gray',
     },
+  ];
+
+  const quickFacts = [
+    { label: 'Timezone', value: 'UTC+1 (Paris)' },
+    { label: 'Collaboration', value: 'Async-friendly, happy to hop on focused calls when needed.' },
+    { label: 'Languages', value: 'French & English' },
   ];
 
   const getIconColorClasses = (color: string) => {
@@ -75,13 +52,22 @@ export default function ContactPage() {
       purple: 'bg-purple/10 text-purple',
       green: 'bg-green/10 text-green',
       orange: 'bg-orange/10 text-orange',
+      blue: 'bg-blue/10 text-blue',
+      gray: 'bg-gray/10 text-gray'
     };
     return colorMap[color] || colorMap.purple;
   };
 
   return (
-    <div className="min-h-screen bg-white py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen overflow-hidden bg-white py-20">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple/5 via-white to-orange/10" />
+        <div className="absolute -right-24 top-16 h-80 w-80 rounded-full bg-purple/15 blur-3xl" />
+        <div className="absolute -left-28 bottom-0 h-96 w-96 rounded-full bg-yellow/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(3,14,60,0.08),_transparent_55%)]" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="mb-4 text-navy">Get In Touch</h1>
           <p className="text-xl text-gray/80 max-w-2xl mx-auto">
@@ -90,15 +76,14 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact Information */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle className="text-navy">Contact Information</CardTitle>
-                <CardDescription>Feel free to reach out through any of these channels</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+        <div className="grid gap-8 lg:grid-cols-5">
+          <Card className="lg:col-span-3 border-border/70 shadow-lg shadow-purple/5">
+            <CardHeader>
+              <CardTitle className="text-navy">Contact Information</CardTitle>
+              <CardDescription>Pick the channel that works best for you.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-4 sm:grid-cols-2">
                 {contactInfo.map((item) => {
                   const Icon = item.icon;
                   return (
@@ -107,138 +92,38 @@ export default function ContactPage() {
                       href={item.href}
                       className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
                     >
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${getIconColorClasses(item.color)}`}>
+                      <div
+                        className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${getIconColorClasses(item.color)}`}
+                      >
                         <Icon className="w-5 h-5" />
                       </div>
                       <div>
                         <p className="text-sm text-gray/70">{item.label}</p>
-                        <p className="text-navy">{item.value}</p>
+                        <p className="font-slim text-navy group-hover:text-navy">{item.value}</p>
                       </div>
                     </a>
                   );
                 })}
-              </CardContent>
-            </Card>
+              </div>
+              <div className="rounded-xl border border-dashed border-border/70 bg-muted/50 p-4 text-sm text-gray/80">
+                Prefer async-first communication, but I'm always happy to schedule a focused call once we have a clear agenda.
+              </div>
+            </CardContent>
+          </Card>
 
-            <Card className="border-border bg-gradient-to-br from-navy to-gray text-white">
+          <div className="lg:col-span-2 space-y-6">
+
+            <Card className="border-border/70">
               <CardHeader>
-                <CardTitle>Connect With Me</CardTitle>
-                <CardDescription className="text-white/80">
-                  Follow me on social media
-                </CardDescription>
+                <CardTitle className="text-navy">Quick facts</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="flex gap-3">
-                  {socialLinks.map((social) => {
-                    const Icon = social.icon;
-                    return (
-                      <a
-                        key={social.label}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center transition-all hover:scale-110 ${social.color}`}
-                        aria-label={social.label}
-                      >
-                        <Icon className="w-5 h-5" />
-                      </a>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="p-6 bg-yellow/10 border border-yellow rounded-lg">
-              <h4 className="mb-2 text-navy">Quick Response</h4>
-              <p className="text-sm text-gray/80">
-                I typically respond within 24 hours during weekdays. 
-                For urgent matters, please call directly.
-              </p>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle className="text-navy">Send Me a Message</CardTitle>
-                <CardDescription>
-                  Fill out the form below and I'll get back to you as soon as possible
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-navy">
-                        Your Name
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="John Doe"
-                        required
-                        className="border-gray/30 focus:border-orange"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-navy">
-                        Email Address
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="john@example.com"
-                        required
-                        className="border-gray/30 focus:border-orange"
-                      />
-                    </div>
+              <CardContent className="space-y-4">
+                {quickFacts.map((fact) => (
+                  <div key={fact.label}>
+                    <p className="text-xs uppercase tracking-wide text-gray/70">{fact.label}</p>
+                    <p className="text-navy">{fact.value}</p>
                   </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="subject" className="text-navy">
-                      Subject
-                    </label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      placeholder="Project Collaboration"
-                      required
-                      className="border-gray/30 focus:border-orange"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-navy">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell me about your project or inquiry..."
-                      rows={6}
-                      required
-                      className="border-gray/30 focus:border-orange resize-none"
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-orange hover:bg-orange/90 text-white"
-                  >
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Message
-                  </Button>
-                </form>
+                ))}
               </CardContent>
             </Card>
           </div>

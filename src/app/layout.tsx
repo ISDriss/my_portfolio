@@ -19,7 +19,7 @@ export default function RootLayout({
         <div className="min-h-screen bg-white">
           <Navigation />
           <main>{children}</main>
-          <footer className="bg-electric text-white py-8">
+          <footer className="bg-gradient-to-b from-electric to-navy text-white py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <p className="text-white/80">
                 © {new Date().getFullYear()} Ilian SEBTI. All rights reserved.
