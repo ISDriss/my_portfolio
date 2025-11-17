@@ -550,6 +550,18 @@ void loop() {
     category: 'CS',
     hasPage: false,
     demo: 'https://futuristic-strand-e16.notion.site/Rapport-et-R-sultats-Projet-FPGA-2ae11ccf8fec81388064e4859e146bfd'
+  },
+
+  //Quickstarter
+  {
+    slug: 'quickstarter',
+    title: 'kickstarter project',
+    description: 'As part of my studies, I worked on launching a product on kickstarter. Working on all aspects: product design, production, marketing and delivery',
+    tags: ['Product design', 'marketing', 'project management'],
+    theme: 'MA',
+    category: 'MA',
+    demo: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
+    hasPage: false,
   }
 
   //Add more here
