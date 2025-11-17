@@ -17,7 +17,16 @@ export type ProjectContentBlock =
       src: string;
       alt: string;
       caption?: string;
-    };
+    }
+  | {
+      type: 'video';
+      src: string;
+      caption?: string;
+    }
+  | {
+    type: 'code';
+    code: string;
+  };
 
 export type ProjectContentEntry = ProjectContentBlock | string;
 
@@ -351,6 +360,169 @@ export const projects: Project[] = [
     highlights: [
       'Captured each fabrication step from sterilization to baking for future reference.',
       'Prepared a complete presentation deck to communicate the process and results.',
+    ],
+  },
+
+  //Scoby sensors
+  {
+    slug: 'scoby-sensors',
+    title: 'Scoby sensors',
+    description: 'Growing and slicing electronic sensors into Kombucha scoby to explore soft bio-electronics.',
+    tags: ['Biomaterials', 'Electronics', 'Arduino', 'Sensors'],
+    theme: 'DBLT',
+    category: 'DBLT',
+    pageContent: [
+      'Overview',
+      'Symbiotic Culture of Bacteria and Yeast (SCOBY) is a cellulose-based biofilm produced while fermenting kombucha. By embedding conductive elements in a living sheet I can explore capacitive touch, bend, and heat sensing.',
+      'The goal of this experiment is to grow sensors directly inside the scoby mat as well as laminate them during slicing, then prototype electronics to read each modality.',
+      'Growing a scoby sheet',
+      'Scoby grows as a byproduct of kombucha, so the process starts by brewing a large batch of sweet tea.',
+      'For 1L of kombucha I used: 6 g of tea, 300 g of sugar (half white, half brown), 800 g of boiling water, 100 g of vinegar, and 100 g of starter scoby.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby1.webp',
+        alt: 'Mixing water, tea, and sugar for scoby growth',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby3.webp',
+        alt: 'Letting the kombucha preparation cool down',
+      },
+      'Mix everything in a large tray, let it cool, then blend the scoby into small pieces and add vinegar.',
+      'Cover the tray with plastic film, poke a small hole, tape it with medical tape for aeration, and move it to an incubator.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby6.webp',
+        alt: 'Scoby incubating',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby8.webp',
+        alt: 'Close look at the growing scoby layer',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby10.webp',
+        alt: 'Scoby mat forming on the surface',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby11.webp',
+        alt: 'Ready-to-harvest scoby sheet',
+      },
+      'Embedding sensors while growing',
+      'The capacitive touch pad is 3D printed with conductive PLA, while the stretch sensor uses a strip of conductive fabric. Both were sterilized before embedding.',
+      'Each sensor rests on top of the scoby bath and is periodically covered with additional medium via syringe during growth.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby12.webp',
+        alt: 'Positioning sensors on the scoby surface',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby13.webp',
+        alt: 'Adding medium over the embedded sensors',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby14.webp',
+        alt: 'Sensors fully encapsulated by the scoby layer',
+      },
+      'Once the scoby grows over the sensors, the sheet is removed, rinsed, and dried in a dehydrator at 50°C for about four hours.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby15.webp',
+        alt: 'Freshly harvested scoby sensor sheet',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby16.webp',
+        alt: 'Drying the scoby sheet in a dehydrator',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby17.jpg',
+        alt: 'Fully dried scoby sensor samples',
+      },
+      'Embedding sensors by slicing',
+      'For the resistive heat sensor, a thin copper wire is threaded between two scoby sheets. The wire expands with temperature and changes resistance.',
+      'The sheet is rinsed, split in half, and the copper is laced with needles before sandwiching and pressing to remove air bubbles.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby18.webp',
+        alt: 'Copper wire sandwiched between scoby sheets',
+      },
+      'Testing the sensors',
+      'Small connection pads are exposed with a scalpel, then electronic leads are sewn with conductive thread and reinforced with careful soldering.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby20.jpg',
+        alt: 'Preparing to solder leads onto the scoby sensors',
+      },
+      'Capacitive touch sensor setup',
+      'The circuit uses a 100 kΩ resistor and the CapacitiveSensor Arduino library to smooth input readings.',
+      "Capacitive touch sketch (excerpt):",
+      {
+        type: 'code',
+        code: 
+`//Libraries
+#include <CapacitiveSensor.h>
+const int numReadings = 10;
+long readings[numReadings];
+long total = 0;
+const int sensitivity = 1000;
+const int thresh = 200;
+CapacitiveSensor cs = CapacitiveSensor(2, 3);
+
+void loop() {
+  Serial.println(smooth());
+  delay(250);
+}`
+      },
+      {
+        type: 'video',
+        src: '/projects_media/scoby/capacitive%20demo.mp4'
+      },
+      'Resistive stretch sensor setup',
+      'A 100 kΩ resistor and 1 pF capacitor feed an analog pin while averaging the signal to keep it stable.',
+      "Stretch sensor loop (excerpt):",
+      {
+        type: 'code',
+        code:
+`const int numReadings = 10;
+long readings[numReadings];
+int readIndex = 0;
+long total = 0;
+int sensor = A3;
+
+void loop() {
+  Serial.println(smooth());
+  delay(250);
+}`
+      },
+      {
+        type: 'video',
+        src: '/projects_media/scoby/stretch%20demo.mp4',
+      },
+      'Resistive heat sensor attempt',
+      'A Wheatstone bridge tuned for a baseline 2 Ω sensor was planned, with measurements amplified through a differential stage for better readability.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/scoby23.jpg',
+        alt: 'Wheatstone bridge test setup for the heat sensor',
+      },
+      'In practice the copper wire oxidized too quickly when the tips were burnt to ensure conductivity, which damaged the sensor and prevented reliable measurements.',
+      {
+        type: 'image',
+        src: '/projects_media/scoby/opamp-opamp57.webp',
+        alt: 'Differential amplifier reference diagram',
+      },
+      'Copper has a temperature coefficient of roughly 0.0039 per °C, so about 0.05 V of bridge imbalance should appear for a 10 °C change at 2 Ω—future iterations will focus on protecting the leads to capture that delta.',
+    ],
+    highlights: [
+      'Grew and dried kombucha scoby sheets specifically for embedding conductive elements.',
+      'Prototyped capacitive, stretch, and heat sensing approaches using low-cost Arduino-friendly circuits.',
+      'Documented the materials, recipes, and calculations needed to iterate on bio-based sensor skins.',
     ],
   },
 

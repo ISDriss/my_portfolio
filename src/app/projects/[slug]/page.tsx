@@ -63,6 +63,28 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </figure>
       );
     }
+    if (block.type === 'video') {
+      return (
+        <figure key={`${block.type}-${index}`} className="space-y-3">
+          <video
+            src={block.src}
+            controls
+            className="w-full rounded-2xl border border-border"
+            preload="metadata"
+          />
+          {block.caption ? <figcaption className="text-sm text-gray/70">{block.caption}</figcaption> : null}
+        </figure>
+      );
+    }
+    if (block.type === 'code') {
+      return (
+        <figure key={`${block.type}-${index}`} className="space-y-3">
+          <pre className="rounded-xl bg-gray/5 p-4 text-sm text-navy overflow-x-auto border border-border">
+            <code>{block.code}</code>
+          </pre>
+        </figure>
+      );
+    }
 
     return (
       <p key={`${block.type}-${index}`} className="text-lg leading-relaxed text-gray/90">
