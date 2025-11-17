@@ -105,7 +105,7 @@ export default function HomePage() {
           </p>
           <div className="flex gap-6 justify-center">
             <a
-              href="https://github.com"
+              href="https://github.com/ISDriss"
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 bg-white/10 hover:bg-orange rounded-full flex items-center justify-center transition-all hover:scale-110"
@@ -113,7 +113,7 @@ export default function HomePage() {
               <Github className="w-6 h-6 text-white" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/ilian-sebti"
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 bg-white/10 hover:bg-orange rounded-full flex items-center justify-center transition-all hover:scale-110"

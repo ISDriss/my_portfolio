@@ -15,6 +15,9 @@ export default function ProjectsPage() {
 
   const filteredProjects =
     activeTheme === 'all' ? projects : projects.filter((project) => project.theme === activeTheme);
+  const sortedProjects = [...filteredProjects].sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }),
+  );
 
   const handleThemeClick = (themeId: string) => {
     setActiveTheme((prev) => (prev === themeId ? 'all' : themeId));
@@ -65,7 +68,7 @@ export default function ProjectsPage() {
         <div className="text-center max-w-4xl mx-auto mb-12">
           {activeTheme === 'all' ? (
             <p className="text-gray/80">
-              Browse by trend to focus on the type of work you care about. Click a label to filter these cards instantly.
+              Browse by trend to focus on the type of work you care about.
             </p>
           ) : (
             <p className="text-gray/80">
@@ -75,7 +78,7 @@ export default function ProjectsPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => {
+          {sortedProjects.map((project) => {
             const currentTheme = themeLookup[project.theme] || defaultTheme;
             const colorSet = colorStyles[currentTheme.color] || colorStyles.purple;
             const hasPage = project.hasPage !== false;
@@ -160,13 +163,13 @@ export default function ProjectsPage() {
         )}
 
         <div className="mt-16 text-center">
-          <div className="inline-block p-8 bg-gradient-to-r from-navy to-gray rounded-xl">
+          <div className="inline-block p-8 bg-gradient-to-br from-navy to-orange rounded-xl">
             <p className="text-white mb-4">Want to see more of my work?</p>
             <a
-              href="https://github.com"
+              href="https://github.com/ISDriss"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-yellow hover:bg-yellow/90 text-navy rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-cyan hover:bg-yellow/90 text-navy rounded-lg transition-colors"
             >
               <Github className="w-5 h-5" />
               View GitHub Profile
