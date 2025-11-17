@@ -1,154 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, type KeyboardEvent } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/card';
 import { Badge } from '@/components/badge';
-
-const colorStyles = {
-  purple: {
-    accent: 'bg-purple',
-    pill: {
-      active: 'bg-purple text-white border-purple shadow-lg',
-      inactive: 'text-purple border-purple/40 bg-purple/10 hover:bg-purple/15',
-    },
-    badge: 'text-purple border-purple/40 bg-purple/10',
-  },
-  green: {
-    accent: 'bg-green',
-    pill: {
-      active: 'bg-green text-white border-green shadow-lg',
-      inactive: 'text-green border-green/40 bg-green/10 hover:bg-green/15',
-    },
-    badge: 'text-green border-green/40 bg-green/10',
-  },
-  orange: {
-    accent: 'bg-orange',
-    pill: {
-      active: 'bg-orange text-white border-orange shadow-lg',
-      inactive: 'text-orange border-orange/40 bg-orange/10 hover:bg-orange/15',
-    },
-    badge: 'text-orange border-orange/40 bg-orange/10',
-  },
-  yellow: {
-    accent: 'bg-yellow',
-    pill: {
-      active: 'bg-yellow text-navy border-yellow shadow-lg',
-      inactive: 'text-yellow border-yellow/60 bg-yellow/10 hover:bg-yellow/15',
-    },
-    badge: 'text-yellow border-yellow/60 bg-yellow/10',
-  },
-} as const;
-
-type ThemeColor = keyof typeof colorStyles;
-
-type Theme = {
-  id: string;
-  label: string;
-  description: string;
-  color: ThemeColor;
-};
-
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  github: string;
-  demo: string;
-  theme: Theme['id'];
-};
-
-const themes: Theme[] = [
-  {
-    id: 'data',
-    label: 'Data & Commerce',
-    description: 'Dashboards, reporting, and transactional systems.',
-    color: 'yellow',
-  },
-  {
-    id: 'productivity',
-    label: 'Productivity & DevOps',
-    description: 'Team coordination, automation, and developer tooling.',
-    color: 'green',
-  },
-  {
-    id: 'ai',
-    label: 'AI & Automation',
-    description: 'Intelligent assistants, content generation, and ML workflows.',
-    color: 'purple',
-  },
-  {
-    id: 'mobile',
-    label: 'Mobile & Wellness',
-    description: 'Cross-platform experiences focused on health and habits.',
-    color: 'orange',
-  },
-];
-
-const themeLookup = themes.reduce<Record<string, Theme>>((acc, theme) => {
-  acc[theme.id] = theme;
-  return acc;
-}, {});
-
-const projects: Project[] = [
-  {
-    id: 1,
-    title: 'E-Commerce Platform',
-    description: 'A full-stack e-commerce solution with real-time inventory management, payment processing, and analytics dashboard.',
-    tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    theme: 'data',
-    github: 'https://github.com',
-    demo: 'https://demo.com',
-  },
-  {
-    id: 2,
-    title: 'Task Management App',
-    description: 'Collaborative task management application with real-time updates, team workspaces, and productivity analytics.',
-    tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'WebSocket'],
-    theme: 'productivity',
-    github: 'https://github.com',
-    demo: 'https://demo.com',
-  },
-  {
-    id: 3,
-    title: 'AI Content Generator',
-    description: 'AI-powered content generation tool leveraging GPT-4 API for creating marketing copy, blog posts, and social media content.',
-    tags: ['Python', 'FastAPI', 'OpenAI', 'React'],
-    theme: 'ai',
-    github: 'https://github.com',
-    demo: 'https://demo.com',
-  },
-  {
-    id: 4,
-    title: 'Analytics Dashboard',
-    description: 'Real-time analytics dashboard with data visualization, custom reports, and automated insights for business intelligence.',
-    tags: ['React', 'D3.js', 'GraphQL', 'AWS'],
-    theme: 'data',
-    github: 'https://github.com',
-    demo: 'https://demo.com',
-  },
-  {
-    id: 5,
-    title: 'Mobile Fitness Tracker',
-    description: 'Cross-platform mobile app for tracking workouts, nutrition, and health metrics with social features.',
-    tags: ['React Native', 'Firebase', 'Redux', 'iOS/Android'],
-    theme: 'mobile',
-    github: 'https://github.com',
-    demo: 'https://demo.com',
-  },
-  {
-    id: 6,
-    title: 'DevOps Automation Tool',
-    description: 'Infrastructure automation platform for managing deployments, monitoring, and scaling cloud resources efficiently.',
-    tags: ['Python', 'Docker', 'Kubernetes', 'Terraform'],
-    theme: 'productivity',
-    github: 'https://github.com',
-    demo: 'https://demo.com',
-  },
-];
+import { projects, themes, themeLookup } from '@/data/projects';
+import { colorStyles } from '@/lib/themeStyles';
 
 export default function ProjectsPage() {
+  const router = useRouter();
   const [activeTheme, setActiveTheme] = useState<string>('all');
   const defaultTheme = themes[0]!;
 
@@ -217,9 +78,31 @@ export default function ProjectsPage() {
           {filteredProjects.map((project) => {
             const currentTheme = themeLookup[project.theme] || defaultTheme;
             const colorSet = colorStyles[currentTheme.color] || colorStyles.purple;
+            const hasPage = project.hasPage !== false;
+            const handleCardNavigation = () => {
+              if (!hasPage) return;
+              router.push(`/projects/${project.slug}`);
+            };
+            const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+              if (!hasPage) return;
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                router.push(`/projects/${project.slug}`);
+              }
+            };
 
             return (
-              <Card key={project.id} className="hover:shadow-xl transition-shadow border-border">
+              <Card
+                key={project.slug}
+                role={hasPage ? 'link' : undefined}
+                tabIndex={hasPage ? 0 : undefined}
+                aria-disabled={!hasPage}
+                onClick={handleCardNavigation}
+                onKeyDown={handleCardKeyDown}
+                className={`hover:shadow-xl transition-shadow border-border ${
+                  hasPage ? 'cursor-pointer focus-visible:ring-2 focus-visible:ring-navy/70 focus-visible:outline-none' : 'cursor-default'
+                }`}
+              >
                 <CardHeader>
                   <div className={`w-full h-2 rounded-t-lg mb-4 ${colorSet.accent}`} />
                   <div className="flex items-start justify-between gap-3">
@@ -238,25 +121,31 @@ export default function ProjectsPage() {
                       </Badge>
                     ))}
                   </div>
-                  <div className="flex gap-4">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-gray hover:text-navy transition-colors"
-                    >
-                      <Github className="w-4 h-4" />
-                      <span className="text-sm">Code</span>
-                    </a>
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-orange hover:text-orange/80 transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      <span className="text-sm">Demo</span>
-                    </a>
+                  <div className="flex flex-wrap gap-4">
+                    {project.github ? (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-gray hover:text-navy transition-colors"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <Github className="w-4 h-4" />
+                        <span className="text-sm">Code</span>
+                      </a>
+                    ) : null}
+                    {project.demo ? (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-orange hover:text-orange/80 transition-colors"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        <span className="text-sm">Link</span>
+                      </a>
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>
