@@ -15,7 +15,7 @@ export default function HomePage() {
                 <span className="text-cyan">Creative Technologies Engineer</span>
               </div>
               <h1 className="text-5xl md:text-6xl">
-                Hello, I'm
+                Hello, I&apos;m
                 <span className="block text-orange mt-2">Ilian SEBTI</span>
               </h1>
               <p className="text-xl text-white/80">
@@ -102,9 +102,9 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-b from-navy to-electric">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="mb-6 text-white">Let's Work Together</h2>
+          <h2 className="mb-6 text-white">Let&apos;s Work Together</h2>
           <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-            I'm always interested in hearing about new projects and opportunities.
+            I&apos;m always interested in hearing about new projects and opportunities.
           </p>
           <div className="flex gap-6 justify-center">
             <a

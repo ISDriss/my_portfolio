@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image'
-import next, { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import { Badge } from '@/components/badge';

@@ -1,5 +1,5 @@
 "use client"
-import { Mail, MapPin, Phone, Github, Linkedin, Sparkles, Clock3 } from 'lucide-react';
+import { Mail, MapPin, Github, Linkedin } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/card';
 
 export default function ContactPage() {
@@ -64,8 +64,8 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <h1 className="mb-4 text-navy">Get In Touch</h1>
           <p className="text-xl text-gray/80 max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? I'd love to hear from you. 
-            Send me a message and I'll respond as soon as possible.
+            Have a project in mind or want to collaborate? I&apos;d love to hear from you. 
+            Send me a message and I&apos;ll respond as soon as possible.
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export default function ContactPage() {
                 })}
               </div>
               <div className="rounded-xl border border-dashed border-border/70 bg-muted/50 p-4 text-sm text-gray/80">
-                Prefer async-first communication, but I'm always happy to schedule a focused call once we have a clear agenda.
+                Prefer async-first communication, but I&apos;m always happy to schedule a focused call once we have a clear agenda.
               </div>
             </CardContent>
           </Card>

@@ -63,7 +63,7 @@ export default function ExperiencePage() {
           {experiences
             .slice()
             .reverse()
-            .map((exp, index) => {
+            .map((exp) => {
             const colors = getColorClasses(exp.color);
             return (
               <Card key={exp.id} className={`border-l-4 ${colors.border} hover:shadow-xl transition-shadow`}>
