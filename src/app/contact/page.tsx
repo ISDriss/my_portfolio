@@ -12,13 +12,6 @@ export default function ContactPage() {
       color: 'purple',
     },
     {
-      icon: Phone,
-      label: 'Phone',
-      value: '+33 6 33 94 24 58',
-      href: 'tel:+33633942458',
-      color: 'green',
-    },
-    {
       icon: MapPin,
       label: 'Location',
       value: 'Garches, France',
