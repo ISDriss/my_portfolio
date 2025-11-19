@@ -43,14 +43,17 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-orange rounded-full opacity-20 blur-3xl"></div>
                 <div className="absolute inset-0 bg-cyan rounded-full opacity-20 blur-2xl animate-pulse"></div>
                 <div className="relative w-full h-full bg-gradient-to-br from-orange to-cyan rounded-full flex items-center justify-center">
-                  <div className="relative w-72 h-72 bg-navy rounded-full overflow-hidden border border-yellow/30 shadow-xl">
+                  <div
+                    className="relative w-72 h-72 bg-navy rounded-full border border-yellow/30 shadow-xl"
+                    style={{ clipPath: 'inset(-40px 0 0 0 round 999px)' }}
+                  >
                     <Image
-                      src="/IS_placeholder.png"
+                      src="/IS_solder.png"
                       alt="Ilian Sebti portrait illustration"
                       fill
                       priority
-                      className="object-cover scale-230"
-                      sizes="288px"
+                      className="object-contain scale-150 translate-y-13 translate-x-3"
+                      sizes="400px"
                     />
                   </div>
                 </div>

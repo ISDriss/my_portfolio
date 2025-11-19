@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { Navigation } from '@/components/navigation';
 import { Toaster } from '@/components/sonner';
 import '@/app/globals.css';
+import { Briefcase } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Engineering Portfolio',
+  title: 'Ilian Sebti',
   description: 'Professional portfolio showcasing projects, experience, and skills',
 };
 
