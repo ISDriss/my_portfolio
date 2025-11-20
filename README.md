@@ -1,7 +1,7 @@
 # Ilian Sebti – Portfolio
 
 Static Next.js site showcasing my project work, skills, and contact details.  
-Live demo: **https://isdriss.github.io/my_portfolio/**
+Live demo: **https://ilian-sebti-portfolio.vercel.app**
 
 ## Stack
 - Next.js 15 + App Router
