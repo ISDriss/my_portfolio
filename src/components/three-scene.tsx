@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export function ThreeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -18,8 +19,52 @@ export function ThreeScene() {
     renderer.setClearColor(0x030e3c, 0);
     container.appendChild(renderer.domElement);
 
-    // scene, materials & meshes
+    // scene & objects
     const scene = new THREE.Scene();
+    const billboards: THREE.Mesh[] = [];
+    const billboardMaterials: THREE.Material[] = [];
+    const billboardGeometry = new THREE.PlaneGeometry(12, 8);
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    // Load city model
+    const loader = new GLTFLoader();
+    let model: THREE.Object3D | null = null;
+    let canceled = false;
+
+    loader.load(
+      '/city_main.glb',
+      (gltf) => {
+        if (canceled) return;
+        model = gltf.scene;
+        model.scale.setScalar(0.1);
+        model.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            child.geometry.computeBoundingSphere();
+          }
+        });
+        scene.add(model);
+        fitModelToView(model);
+        setIsLoading(false);
+      },
+      undefined,
+      (error) => {
+        console.error('Failed to load city_main.glb', error);
+        if (!canceled) setIsLoading(false);
+      },
+    );
+
+    // Meshes
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(4000, 4000),
+      new THREE.MeshPhongMaterial({ color: 0x0c122f, emissive: 0x050915, shininess: 5 }),
+    );
+    floor.rotation.x = -Math.PI / 2; // lay flat on the XZ plane
+    floor.position.y = 0;
+    floor.receiveShadow = true;
+    scene.add(floor);
 
     // lights
     const ambient = new THREE.AmbientLight(0xffffff, 0.8);
@@ -82,30 +127,56 @@ export function ThreeScene() {
       controls.update();
     };
 
-    // Load city model
-    const loader = new GLTFLoader();
-    let model: THREE.Object3D | null = null;
-    let canceled = false;
+    const addBillboardAt = (point: THREE.Vector3, normal: THREE.Vector3) => {
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0x1ad3ff,
+        emissive: 0x0f7cb0,
+        emissiveIntensity: 1.2,
+        metalness: 0.35,
+        roughness: 0.45,
+        transparent: true,
+        opacity: 0.9,
+        side: THREE.DoubleSide,
+      });
+      billboardMaterials.push(mat);
+      const board = new THREE.Mesh(billboardGeometry, mat);
+      const offset = normal.clone().setLength(0.2);
+      board.position.copy(point).add(offset);
+      board.lookAt(board.position.clone().add(normal));
+      board.castShadow = false;
+      board.receiveShadow = true;
+      scene.add(board);
+      billboards.push(board);
 
-    loader.load(
-      '/city_main.glb',
-      (gltf) => {
-        if (canceled) return;
-        model = gltf.scene;
-        model.scale.setScalar(0.1);
-        model.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-            child.geometry.computeBoundingSphere();
-          }
-        });
-        scene.add(model);
-        fitModelToView(model);
-      },
-      undefined,
-      (error) => console.error('Failed to load city_main.glb', error),
-    );
+      console.info('Billboard placed at', board.position.toArray(), 'normal', normal.toArray());
+    };
+
+    const removeLastBillboard = () => {
+      const board = billboards.pop();
+      if (!board) return;
+      scene.remove(board);
+      (board.material as THREE.Material).dispose();
+      const mat = billboardMaterials.pop();
+      if (mat && mat !== board.material) {
+        mat.dispose();
+      }
+    };
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!model || event.button !== 0) return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(pointer, camera);
+      const intersects = raycaster.intersectObject(model, true);
+      if (!intersects.length) return;
+      const hit = intersects[0];
+      const worldNormal = hit.face?.normal
+        ? hit.face.normal.clone().transformDirection(hit.object.matrixWorld).normalize()
+        : new THREE.Vector3(0, 0, 1);
+      addBillboardAt(hit.point, worldNormal);
+    };
 
     // resize handler
     const handleResize = () => {
@@ -165,12 +236,16 @@ export function ThreeScene() {
           console.info('Controls target', controls.target.toArray());
           console.info('Near/Far', camera.near, camera.far);
           break;
+        case 'backspace':
+          removeLastBillboard();
+          break;
         default:
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    renderer.domElement.addEventListener('pointerdown', handlePointerDown);
 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
@@ -179,11 +254,19 @@ export function ThreeScene() {
       cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
       window.removeEventListener('keydown', handleKeyDown);
+      renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
       if (renderer.domElement.parentElement === container) {
         container.removeChild(renderer.domElement);
       }
       controls.dispose();
       renderer.dispose();
+      billboards.forEach((board) => {
+        scene.remove(board);
+      });
+      billboardGeometry.dispose();
+      billboardMaterials.forEach((mat) => mat.dispose());
+      floor.geometry.dispose();
+      (floor.material as THREE.Material).dispose();
       if (model) {
         scene.remove(model);
         model.traverse((child) => {
@@ -198,11 +281,20 @@ export function ThreeScene() {
         });
       }
       canceled = true;
+      setIsLoading(false);
     };
   }, []);
 
   return (
     <div className="relative w-full h-96 md:h-[520px]">
+      {isLoading && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-[32px] bg-navy/85 backdrop-blur">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-electric/30 border-t-electric" />
+          <div className="text-white/80 text-sm uppercase tracking-[0.2em]">
+            Loading Scene...
+          </div>
+        </div>
+      )}
       <div
         ref={containerRef}
         className="relative h-full w-full overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br from-navy/70 via-electric/40 to-navy/80 shadow-[0_25px_80px_-35px_rgba(0,0,0,0.7)]"
