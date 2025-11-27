@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export function HeroScene() {
+export function ThreeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

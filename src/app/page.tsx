@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Github, Linkedin, Mail, Sparkles } from 'lucide-react';
 import { Button } from '@/components/button';
-import { HeroScene } from '@/components/hero-scene';
+import { ThreeScene } from '@/components/three-scene';
 
 export default function HomePage() {
   return (
@@ -56,7 +56,7 @@ export default function HomePage() {
             </div>
             <div className="block mt-4 md:mt-0">
               <div className="relative">
-                <HeroScene />
+                <ThreeScene />
                 <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-orange/30 blur-3xl" />
                 <div className="pointer-events-none absolute -right-12 top-12 h-40 w-40 rounded-full bg-cyan/25 blur-3xl" />
                 <div className="absolute bottom-6 left-6 right-6 md:left-8 md:right-8 flex flex-wrap gap-4">
