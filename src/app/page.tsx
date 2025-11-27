@@ -66,21 +66,9 @@ export default function HomePage() {
 
       {/* Three Scene Section */}
       <section>
-        <div className="block mt-4 md:mt-0">
+        <div>
               <div className="relative">
                 <ThreeScene />
-                <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-orange/30 blur-3xl" />
-                <div className="pointer-events-none absolute -right-12 top-12 h-40 w-40 rounded-full bg-cyan/25 blur-3xl" />
-                <div className="absolute bottom-6 left-6 right-6 md:left-8 md:right-8 flex flex-wrap gap-4">
-                  <div className="flex-1 min-w-[220px] rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur">
-                    <p className="text-sm text-white/70">Latest playground</p>
-                    <p className="text-white text-lg">Interactive energy core</p>
-                  </div>
-                  <div className="min-w-[180px] rounded-2xl bg-navy/80 border border-cyan/30 p-4 text-white shadow-lg">
-                    <p className="text-sm text-cyan/80">Now showing</p>
-                    <p className="text-lg">Shader-inspired motion</p>
-                  </div>
-                </div>
               </div>
         </div>
       </section>

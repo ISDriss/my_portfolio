@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export function ThreeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,113 +18,96 @@ export function ThreeScene() {
     renderer.setClearColor(0x030e3c, 0);
     container.appendChild(renderer.domElement);
 
+    // scene, materials & meshes
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x030e3c, 16, 32);
 
+    // lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+    const key = new THREE.DirectionalLight(0xffffff, 1.1);
+    key.position.set(5, 8, 6);
+    scene.add(ambient, key);
+
+    // Camera
     const camera = new THREE.PerspectiveCamera(
       45,
       container.clientWidth / container.clientHeight,
       0.1,
-      100,
+      1000,
     );
-    camera.position.set(0, 1.5, 8);
+    camera.position.set(6, 4, 10);
+    camera.lookAt(0, 1, 0);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.45);
-    const warm = new THREE.PointLight(0xff6403, 1.5, 28);
-    warm.position.set(4, 4, 6);
-    const cool = new THREE.PointLight(0x12f8ba, 1.2, 28);
-    cool.position.set(-4, -1, 5);
-    const rim = new THREE.PointLight(0xffe100, 0.7, 24);
-    rim.position.set(0, 6, -4);
-    scene.add(ambient, warm, cool, rim);
+    // controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 1, 0);
+    controls.update();
 
-    const group = new THREE.Group();
-    scene.add(group);
+    // Optional preset camera from manual tweaking
+    const presetCamera = {
+      position: new THREE.Vector3(8.525420424051044, 48.50387277368863, 144.68016838546302),
+      target: new THREE.Vector3(5.114105441477861, 31.581279030743215, -13.365219823949888),
+      near: 1.2066283236666766,
+      far: 2413.256647333353,
+    };
 
-    const coreMaterial = new THREE.MeshStandardMaterial({
-      color: 0xff6403,
-      metalness: 0.45,
-      roughness: 0.18,
-    });
-    const core = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(1.2, 0.35, 240, 32, 2, 5),
-      coreMaterial,
-    );
-    core.castShadow = true;
-    group.add(core);
-
-    const shellMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color('#12f8ba'),
-      metalness: 0.15,
-      roughness: 0.1,
-      transmission: 0.9,
-      thickness: 1.2,
-      transparent: true,
-      opacity: 0.9,
-      clearcoat: 0.6,
-      clearcoatRoughness: 0.2,
-    });
-    const shell = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.65, 2),
-      shellMaterial,
-    );
-    group.add(shell);
-
-    const rings: THREE.Line[] = [];
-    [2.4, 3, 3.6].forEach((radius, index) => {
-      const ringGeometry = new THREE.BufferGeometry();
-      const points: THREE.Vector3[] = [];
-      for (let i = 0; i <= 360; i++) {
-        const angle = THREE.MathUtils.degToRad(i);
-        const y = Math.sin(angle * (1.5 + index * 0.2)) * 0.35;
-        points.push(
-          new THREE.Vector3(
-            Math.cos(angle) * radius,
-            y,
-            Math.sin(angle) * radius,
-          ),
-        );
+    // helper to frame the model and keep camera range sane
+    const fitModelToView = (object: THREE.Object3D) => {
+      // If a preset exists, apply it instead of auto-fit
+      if (presetCamera) {
+        camera.position.copy(presetCamera.position);
+        controls.target.copy(presetCamera.target);
+        camera.near = presetCamera.near;
+        camera.far = presetCamera.far;
+        camera.updateProjectionMatrix();
+        controls.update();
+        return;
       }
-      ringGeometry.setFromPoints(points);
-      const ring = new THREE.Line(
-        ringGeometry,
-        new THREE.LineBasicMaterial({
-          color: 0xffe100,
-          transparent: true,
-          opacity: 0.6,
-        }),
-      );
-      ring.rotation.x = Math.random() * Math.PI;
-      ring.rotation.y = Math.random() * Math.PI;
-      group.add(ring);
-      rings.push(ring);
-    });
 
-    const particleGeometry = new THREE.BufferGeometry();
-    const particleCount = 420;
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 18;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 12;
-    }
-    particleGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(positions, 3),
+      const box = new THREE.Box3().setFromObject(object);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const fov = (camera.fov * Math.PI) / 180;
+      const distance = (maxDim * 1.2) / Math.tan(fov / 2 || 0.0001);
+      const direction = new THREE.Vector3(1, 0.6, 1).normalize();
+
+      camera.position.copy(center.clone().add(direction.multiplyScalar(distance)));
+      camera.near = Math.max(0.1, distance / 500);
+      camera.far = Math.max(distance * 4, camera.near + 1);
+      camera.updateProjectionMatrix();
+
+      controls.target.copy(center);
+      controls.maxDistance = distance * 3;
+      controls.update();
+    };
+
+    // Load city model
+    const loader = new GLTFLoader();
+    let model: THREE.Object3D | null = null;
+    let canceled = false;
+
+    loader.load(
+      '/city_main.glb',
+      (gltf) => {
+        if (canceled) return;
+        model = gltf.scene;
+        model.scale.setScalar(0.1);
+        model.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            child.geometry.computeBoundingSphere();
+          }
+        });
+        scene.add(model);
+        fitModelToView(model);
+      },
+      undefined,
+      (error) => console.error('Failed to load city_main.glb', error),
     );
-    const particleMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.045,
-      transparent: true,
-      opacity: 0.8,
-      sizeAttenuation: true,
-    });
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
 
-    const start = performance.now();
-    let frameId: number;
-
+    // resize handler
     const handleResize = () => {
       if (!container) return;
       const { clientWidth, clientHeight } = container;
@@ -131,30 +116,61 @@ export function ThreeScene() {
       camera.updateProjectionMatrix();
     };
 
+    // animations
+    let frameId: number;
     const animate = () => {
-      const elapsed = (performance.now() - start) / 1000;
-
-      core.rotation.x += 0.005;
-      core.rotation.y += 0.006;
-      shell.rotation.y -= 0.0025;
-      shell.rotation.z += 0.0015;
-
-      rings.forEach((ring, index) => {
-        ring.rotation.y += 0.002 + index * 0.001;
-        ring.rotation.x -= 0.001 * index;
-        ring.position.y = Math.sin(elapsed * (0.6 + index * 0.3)) * 0.25;
-      });
-
-      particles.rotation.y += 0.0008;
-
-      camera.position.x = Math.sin(elapsed * 0.35) * 0.8;
-      camera.lookAt(scene.position);
-
+      controls.update();
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
 
     animate();
+
+    // keyboard nudges to help find a good angle; log with "L"
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const speedBase = event.altKey ? 0.25 : event.shiftKey ? 2.5 : 1;
+
+      const moveBoth = (dir: THREE.Vector3, amount: number) => {
+        const delta = dir.clone().setLength(amount);
+        camera.position.add(delta);
+        controls.target.add(delta);
+        controls.update();
+      };
+
+      const forward = controls.target.clone().sub(camera.position).normalize();
+      const right = forward.clone().cross(camera.up).normalize();
+      const up = new THREE.Vector3(0, 1, 0);
+
+      switch (event.key.toLowerCase()) {
+        case 'w':
+          moveBoth(forward, speedBase);
+          break;
+        case 's':
+          moveBoth(forward, -speedBase);
+          break;
+        case 'a':
+          moveBoth(right, -speedBase);
+          break;
+        case 'd':
+          moveBoth(right, speedBase);
+          break;
+        case 'r':
+          moveBoth(up, speedBase);
+          break;
+        case 'f':
+          moveBoth(up, -speedBase);
+          break;
+        case 'l':
+          console.info('Camera position', camera.position.toArray());
+          console.info('Controls target', controls.target.toArray());
+          console.info('Near/Far', camera.near, camera.far);
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
@@ -162,20 +178,26 @@ export function ThreeScene() {
     return () => {
       cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
+      window.removeEventListener('keydown', handleKeyDown);
       if (renderer.domElement.parentElement === container) {
         container.removeChild(renderer.domElement);
       }
+      controls.dispose();
       renderer.dispose();
-      core.geometry.dispose();
-      core.material.dispose();
-      shell.geometry.dispose();
-      shell.material.dispose();
-      rings.forEach((ring) => {
-        ring.geometry.dispose();
-        ring.material.dispose();
-      });
-      particleGeometry.dispose();
-      particleMaterial.dispose();
+      if (model) {
+        scene.remove(model);
+        model.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.geometry.dispose();
+            if (Array.isArray(child.material)) {
+              child.material.forEach((mat) => mat.dispose());
+            } else {
+              child.material.dispose();
+            }
+          }
+        });
+      }
+      canceled = true;
     };
   }, []);
 
