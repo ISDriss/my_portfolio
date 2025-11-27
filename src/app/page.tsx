@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Sparkles } from 'lucide-react';
 import { Button } from '@/components/button';
+import { HeroScene } from '@/components/hero-scene';
 
 export default function HomePage() {
   return (
@@ -37,24 +37,36 @@ export default function HomePage() {
                   </Button>
                 </Link>
               </div>
+              <div className="grid grid-cols-2 gap-3 pt-6 max-w-lg">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3 border border-white/10">
+                  <Sparkles className="w-5 h-5 text-yellow" />
+                  <div>
+                    <p className="text-sm text-white/70">Real-time visuals</p>
+                    <p className="text-white">Three.js prototyping</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3 border border-white/10">
+                  <ArrowRight className="w-5 h-5 text-cyan" />
+                  <div>
+                    <p className="text-sm text-white/70">Full-stack delivery</p>
+                    <p className="text-white">Ideas to production</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="hidden md:flex justify-center">
-              <div className="relative w-80 h-80">
-                <div className="absolute inset-0 bg-orange rounded-full opacity-20 blur-3xl"></div>
-                <div className="absolute inset-0 bg-cyan rounded-full opacity-20 blur-2xl animate-pulse"></div>
-                <div className="relative w-full h-full bg-gradient-to-br from-orange to-cyan rounded-full flex items-center justify-center">
-                  <div
-                    className="relative w-72 h-72 bg-navy rounded-full border border-yellow/30 shadow-xl"
-                    style={{ clipPath: 'inset(-40px 0 0 0 round 999px)' }}
-                  >
-                    <Image
-                      src="/IS_solder.png"
-                      alt="Ilian Sebti portrait illustration"
-                      fill
-                      priority
-                      className="object-contain scale-150 translate-y-13 translate-x-3"
-                      sizes="400px"
-                    />
+            <div className="block mt-4 md:mt-0">
+              <div className="relative">
+                <HeroScene />
+                <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-orange/30 blur-3xl" />
+                <div className="pointer-events-none absolute -right-12 top-12 h-40 w-40 rounded-full bg-cyan/25 blur-3xl" />
+                <div className="absolute bottom-6 left-6 right-6 md:left-8 md:right-8 flex flex-wrap gap-4">
+                  <div className="flex-1 min-w-[220px] rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur">
+                    <p className="text-sm text-white/70">Latest playground</p>
+                    <p className="text-white text-lg">Interactive energy core</p>
+                  </div>
+                  <div className="min-w-[180px] rounded-2xl bg-navy/80 border border-cyan/30 p-4 text-white shadow-lg">
+                    <p className="text-sm text-cyan/80">Now showing</p>
+                    <p className="text-lg">Shader-inspired motion</p>
                   </div>
                 </div>
               </div>
