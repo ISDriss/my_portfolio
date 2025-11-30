@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { projects } from '@/data/projects';
 
 export function ThreeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,9 +23,146 @@ export function ThreeScene() {
     const scene = new THREE.Scene();
     const billboards: THREE.Mesh[] = [];
     const billboardMaterials: THREE.Material[] = [];
-    const billboardGeometry = new THREE.PlaneGeometry(12, 8);
-    const raycaster = new THREE.Raycaster();
-    const pointer = new THREE.Vector2();
+    const billboardGeometries: THREE.PlaneGeometry[] = [];
+    const textureLoader = new THREE.TextureLoader();
+    const cameraTransition = {
+      active: false,
+      start: 0,
+      duration: 900, // ms
+      fromPos: new THREE.Vector3(),
+      toPos: new THREE.Vector3(),
+      fromTarget: new THREE.Vector3(),
+      toTarget: new THREE.Vector3(),
+      fromNear: 0.1,
+      toNear: 0.1,
+      fromFar: 1000,
+      toFar: 1000,
+    };
+    const adTextures = projects
+      .filter((project) => project.ad?.src)
+      .map((project) => {
+        const texture = textureLoader.load(project.ad!.src);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.center.set(0.5, 0.5);
+        return { texture, ad: project.ad! };
+      });
+    const pickRandomAdTexture = () => {
+      if (!adTextures.length) return null;
+      return adTextures[Math.floor(Math.random() * adTextures.length)];
+    };
+    const billboardPresets = {
+      mainBuilding: [
+        {
+          position: [2.0428859128498056, 69.88722776266901, 8.056453374139192],
+          normal: [-0.00023369147324374683, 0, 0.9999999726941473],
+          size: [12, 8],
+        },
+        {
+          position: [2.3087598160279654, 46.103318853307954, 8.504906418294297],
+          normal: [-0.00023582451225646317, 0, 0.9999999721933994],
+          size: [12, 8],
+        },
+        {
+          position: [2.41045710124347, 24.045807883416952, 8.504929551225743],
+          normal: [-0.00036444841070960225, -6.60433924342156e-7, 0.9999999335884577],
+          size: [12, 8],
+        },
+      ],
+      leftBuildings: [
+        {
+          position: [-15.056403466747392, 29.23789326650744, 23.40251137291484],
+          normal: [0.9126276024527601, 0, 0.408791951047629],
+          size: [12, 8],
+        },
+        {
+          position: [-15.011738772630748, 17.12096331734588, 23.302805535854496],
+          normal: [0.9126276802430101, 0, 0.408791777380933],
+          size: [12, 8],
+        },
+        {
+          position: [-22.800053950054778, 29.735444831509763, 40.69021989834796],
+          normal: [0.9126277308079128, 0, 0.40879166449476423],
+          size: [12, 8],
+        },
+        {
+          position: [-22.974481166476384, 19.903838863811885, 41.07963162454429],
+          normal: [0.9126276533790899, 0.0000017074993234179821, 0.4087918373510657],
+          size: [12, 8],
+        },
+        {
+          position: [-23.055570046624897, 11.14170553178485, 41.26066808692684],
+          normal: [0.9126279044781537, -6.759222262861331e-7, 0.40879127677502747],
+          size: [12, 8],
+        },
+        {
+          position: [-34.48729394929018, 29.854316392435802, 45.8129142735668],
+          normal: [-0.4087894457824752, 0, 0.9126287246283984],
+          size: [12, 8],
+        },
+        {
+          position: [-30.881695358829905, 17.594376555409365, 54.43938455397204],
+          normal: [0.9205258482250661, 0, 0.3906816642095231],
+          size: [12, 8],
+        },
+        {
+          position: [-36.42130721888894, 9.366701664837644, 56.489711334968106],
+          normal: [-0.39073853490519694, 0, 0.9205017095802377],
+          size: [12, 8],
+        },
+      ],
+      rightBuildings: [
+        {
+          position: [22.168814896346262, 52.05899218198243, 20.33540111247777],
+          normal: [-0.7612337685968078, 0, 0.6484775628716091],
+          size: [12, 8],
+        },
+        {
+          position: [30.11269623094846, 44.41319074958633, 29.660509368253326],
+          normal: [-0.7612337685968079, 0, 0.6484775628716091],
+          size: [12, 8],
+        },
+        {
+          position: [21.35865642988687, 33.541054395561034, 19.462958864796743],
+          normal: [-0.7611816880257628, 0.010052764267350892, 0.6484607773372539],
+          size: [12, 8],
+        },
+        {
+          position: [29.97378970573553, 33.45042310487312, 29.497450006257385],
+          normal: [-0.7612337685968078, 0, 0.6484775628716091],
+          size: [12, 8],
+        },
+        {
+          position: [20.43974121199707, 22.65163358071342, 18.305693966534523],
+          normal: [-0.7612299222474544, 0, 0.6484820779906986],
+          size: [12, 8],
+        },
+        {
+          position: [29.8274066474837, 22.51890142860623, 29.32561410402767],
+          normal: [-0.7612337685968078, 0, 0.6484775628716091],
+          size: [12, 8],
+        },
+        {
+          position: [39.74486149235174, 30.253045963765306, 41.59306954421096],
+          normal: [-0.7615865988406, 0, 0.6480631546897319],
+          size: [12, 8],
+        },
+        {
+          position: [39.77153823390384, 21.54589024295926, 41.62441934201969],
+          normal: [-0.7615865988406, 0, 0.6480631546897319],
+          size: [12, 8],
+        },
+        {
+          position: [39.71595038878679, 12.418617236947405, 41.55909398353694],
+          normal: [-0.7615865988406, 0, 0.6480631546897317],
+          size: [12, 8],
+        },
+        {
+          position: [51.65717853573406, 45.32236505392231, 28.914428694777015],
+          normal: [-0.7475631606431303, 0, 0.6641907262595987],
+          size: [12, 8],
+        },
+      ],
+    };
 
     // Load city model
     const loader = new GLTFLoader();
@@ -66,13 +203,48 @@ export function ThreeScene() {
     floor.receiveShadow = true;
     scene.add(floor);
 
+    const addBillboardAt = (
+      point: THREE.Vector3,
+      normal: THREE.Vector3,
+      size: [number, number] = [12, 8],
+    ) => {
+      const randomAd = pickRandomAdTexture();
+      const mat = new THREE.MeshStandardMaterial({
+        color: randomAd ? 0xffffff : 0x1ad3ff,
+        emissive: randomAd ? 0xffffff : 0x0f7cb0,
+        emissiveIntensity: randomAd ? 0.25 : 1.2,
+        metalness: 0.25,
+        roughness: 0.4,
+        transparent: true,
+        opacity: 0.95,
+        side: THREE.DoubleSide,
+      });
+      if (randomAd) {
+        mat.map = randomAd.texture;
+      }
+      billboardMaterials.push(mat);
+      const geometry = new THREE.PlaneGeometry(size[0], size[1]);
+      billboardGeometries.push(geometry);
+      const board = new THREE.Mesh(geometry, mat);
+      const offset = normal.clone().setLength(0.2);
+      board.position.copy(point).add(offset);
+      board.lookAt(board.position.clone().add(normal));
+      board.castShadow = false;
+      board.receiveShadow = true;
+      board.userData.normal = normal.clone();
+      board.userData.size = size;
+      scene.add(board);
+      billboards.push(board);
+
+    };
+
     // lights
     const ambient = new THREE.AmbientLight(0xffffff, 0.8);
     const key = new THREE.DirectionalLight(0xffffff, 1.1);
     key.position.set(5, 8, 6);
     scene.add(ambient, key);
 
-    // Camera
+    //#region Camera
     const camera = new THREE.PerspectiveCamera(
       45,
       container.clientWidth / container.clientHeight,
@@ -80,15 +252,16 @@ export function ThreeScene() {
       1000,
     );
     camera.position.set(6, 4, 10);
-    camera.lookAt(0, 1, 0);
+    const cameraTarget = new THREE.Vector3(0, 1, 0);
+    camera.lookAt(cameraTarget);
+    const defaultCameraState = {
+      position: camera.position.clone(),
+      target: cameraTarget.clone(),
+      near: camera.near,
+      far: camera.far,
+    };
 
-    // controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.target.set(0, 1, 0);
-    controls.update();
-
-    // Optional preset camera from manual tweaking
+    // Camera preset
     const presetCamera = {
       position: new THREE.Vector3(8.525420424051044, 48.50387277368863, 144.68016838546302),
       target: new THREE.Vector3(5.114105441477861, 31.581279030743215, -13.365219823949888),
@@ -101,11 +274,14 @@ export function ThreeScene() {
       // If a preset exists, apply it instead of auto-fit
       if (presetCamera) {
         camera.position.copy(presetCamera.position);
-        controls.target.copy(presetCamera.target);
+        cameraTarget.copy(presetCamera.target);
         camera.near = presetCamera.near;
         camera.far = presetCamera.far;
         camera.updateProjectionMatrix();
-        controls.update();
+        defaultCameraState.position.copy(camera.position);
+        defaultCameraState.target.copy(cameraTarget);
+        defaultCameraState.near = camera.near;
+        defaultCameraState.far = camera.far;
         return;
       }
 
@@ -122,61 +298,88 @@ export function ThreeScene() {
       camera.far = Math.max(distance * 4, camera.near + 1);
       camera.updateProjectionMatrix();
 
-      controls.target.copy(center);
-      controls.maxDistance = distance * 3;
-      controls.update();
+      cameraTarget.copy(center);
+      defaultCameraState.position.copy(camera.position);
+      defaultCameraState.target.copy(cameraTarget);
+      defaultCameraState.near = camera.near;
+      defaultCameraState.far = camera.far;
     };
 
-    const addBillboardAt = (point: THREE.Vector3, normal: THREE.Vector3) => {
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0x1ad3ff,
-        emissive: 0x0f7cb0,
-        emissiveIntensity: 1.2,
-        metalness: 0.35,
-        roughness: 0.45,
-        transparent: true,
-        opacity: 0.9,
-        side: THREE.DoubleSide,
+    // camera transition helper
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const startCameraTransition = ({
+      position,
+      target,
+      near,
+      far,
+    }: {
+      position: THREE.Vector3;
+      target: THREE.Vector3;
+      near: number;
+      far: number;
+    }) => {
+      cameraTransition.active = true;
+      cameraTransition.start = performance.now();
+      cameraTransition.fromPos.copy(camera.position);
+      cameraTransition.toPos.copy(position);
+      cameraTransition.fromTarget.copy(cameraTarget);
+      cameraTransition.toTarget.copy(target);
+      cameraTransition.fromNear = camera.near;
+      cameraTransition.toNear = near;
+      cameraTransition.fromFar = camera.far;
+      cameraTransition.toFar = far;
+    };
+
+    const restoreCamera = () => {
+      focusedBillboard = null;
+      startCameraTransition({
+        position: defaultCameraState.position,
+        target: defaultCameraState.target,
+        near: defaultCameraState.near,
+        far: defaultCameraState.far,
       });
-      billboardMaterials.push(mat);
-      const board = new THREE.Mesh(billboardGeometry, mat);
-      const offset = normal.clone().setLength(0.2);
-      board.position.copy(point).add(offset);
-      board.lookAt(board.position.clone().add(normal));
-      board.castShadow = false;
-      board.receiveShadow = true;
-      scene.add(board);
-      billboards.push(board);
-
-      console.info('Billboard placed at', board.position.toArray(), 'normal', normal.toArray());
     };
 
-    const removeLastBillboard = () => {
-      const board = billboards.pop();
-      if (!board) return;
-      scene.remove(board);
-      (board.material as THREE.Material).dispose();
-      const mat = billboardMaterials.pop();
-      if (mat && mat !== board.material) {
-        mat.dispose();
-      }
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let focusedBillboard: THREE.Mesh | null = null;
+    const focusOnBillboard = (board: THREE.Mesh) => {
+      const normal = (board.userData.normal as THREE.Vector3 | undefined)?.clone() ??
+        new THREE.Vector3(0, 0, 1);
+      const size = (board.userData.size as [number, number] | undefined) ?? [12, 8];
+      const focusDistance = Math.max(size[0], size[1]) * 1.3;
+      const target = board.position.clone();
+      const cameraOffset = normal.setLength(focusDistance);
+      startCameraTransition({
+        position: target.clone().add(cameraOffset),
+        target,
+        near: 0.1,
+        far: Math.max(focusDistance * 10, defaultCameraState.far),
+      });
+      focusedBillboard = board;
     };
 
+    Object.values(billboardPresets).forEach((group) => {
+      group.forEach(({ position, normal, size }) => {
+        addBillboardAt(new THREE.Vector3(...position), new THREE.Vector3(...normal), size);
+      });
+    });
     const handlePointerDown = (event: PointerEvent) => {
-      if (!model || event.button !== 0) return;
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(pointer, camera);
-      const intersects = raycaster.intersectObject(model, true);
-      if (!intersects.length) return;
-      const hit = intersects[0];
-      const worldNormal = hit.face?.normal
-        ? hit.face.normal.clone().transformDirection(hit.object.matrixWorld).normalize()
-        : new THREE.Vector3(0, 0, 1);
-      addBillboardAt(hit.point, worldNormal);
+      const intersects = raycaster.intersectObjects(billboards, false);
+      if (intersects.length) {
+        focusOnBillboard(intersects[0].object as THREE.Mesh);
+        return;
+      }
+      if (focusedBillboard) {
+        restoreCamera();
+      }
     };
+    //#endregion Camera
 
     // resize handler
     const handleResize = () => {
@@ -190,61 +393,34 @@ export function ThreeScene() {
     // animations
     let frameId: number;
     const animate = () => {
-      controls.update();
+      if (cameraTransition.active) {
+        const now = performance.now();
+        const t = Math.min(1, (now - cameraTransition.start) / cameraTransition.duration);
+        const eased = easeOutCubic(t);
+        camera.position.lerpVectors(cameraTransition.fromPos, cameraTransition.toPos, eased);
+        cameraTarget.lerpVectors(cameraTransition.fromTarget, cameraTransition.toTarget, eased);
+        camera.near = THREE.MathUtils.lerp(
+          cameraTransition.fromNear,
+          cameraTransition.toNear,
+          eased,
+        );
+        camera.far = THREE.MathUtils.lerp(
+          cameraTransition.fromFar,
+          cameraTransition.toFar,
+          eased,
+        );
+        camera.updateProjectionMatrix();
+        if (t >= 1) {
+          cameraTransition.active = false;
+        }
+      }
+      camera.lookAt(cameraTarget);
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
 
     animate();
 
-    // keyboard nudges to help find a good angle; log with "L"
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const speedBase = event.altKey ? 0.25 : event.shiftKey ? 2.5 : 1;
-
-      const moveBoth = (dir: THREE.Vector3, amount: number) => {
-        const delta = dir.clone().setLength(amount);
-        camera.position.add(delta);
-        controls.target.add(delta);
-        controls.update();
-      };
-
-      const forward = controls.target.clone().sub(camera.position).normalize();
-      const right = forward.clone().cross(camera.up).normalize();
-      const up = new THREE.Vector3(0, 1, 0);
-
-      switch (event.key.toLowerCase()) {
-        case 'w':
-          moveBoth(forward, speedBase);
-          break;
-        case 's':
-          moveBoth(forward, -speedBase);
-          break;
-        case 'a':
-          moveBoth(right, -speedBase);
-          break;
-        case 'd':
-          moveBoth(right, speedBase);
-          break;
-        case 'r':
-          moveBoth(up, speedBase);
-          break;
-        case 'f':
-          moveBoth(up, -speedBase);
-          break;
-        case 'l':
-          console.info('Camera position', camera.position.toArray());
-          console.info('Controls target', controls.target.toArray());
-          console.info('Near/Far', camera.near, camera.far);
-          break;
-        case 'backspace':
-          removeLastBillboard();
-          break;
-        default:
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
     renderer.domElement.addEventListener('pointerdown', handlePointerDown);
 
     const resizeObserver = new ResizeObserver(handleResize);
@@ -253,18 +429,17 @@ export function ThreeScene() {
     return () => {
       cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
-      window.removeEventListener('keydown', handleKeyDown);
       renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
       if (renderer.domElement.parentElement === container) {
         container.removeChild(renderer.domElement);
       }
-      controls.dispose();
       renderer.dispose();
       billboards.forEach((board) => {
         scene.remove(board);
       });
-      billboardGeometry.dispose();
+      billboardGeometries.forEach((geometry) => geometry.dispose());
       billboardMaterials.forEach((mat) => mat.dispose());
+      adTextures.forEach(({ texture }) => texture.dispose());
       floor.geometry.dispose();
       (floor.material as THREE.Material).dispose();
       if (model) {

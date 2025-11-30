@@ -65,13 +65,13 @@ export type Project = {
   category: string;
   github?: string;
   demo?: string;
-  hasPage?: boolean;
-  pageContent?: ProjectContentEntry[];
-  highlights?: string[];
-  image?: {
+  ad?: {
     src: string;
     alt: string;
   };
+  hasPage?: boolean;
+  pageContent?: ProjectContentEntry[];
+  highlights?: string[];
 };
 
 export const projects: Project[] = [
@@ -84,6 +84,10 @@ export const projects: Project[] = [
     tags: ['Blender', 'Hexedit'],
     theme: 'MA',
     category: 'MA',
+    ad: {
+      src: '/projects_media/glitching/BGlitch2.png',
+      alt: 'Glitching',
+    },
     pageContent: [
       'Objective: distort a 3D model blender file by altering the binary values for a workshop',
       'Process',
@@ -123,6 +127,10 @@ export const projects: Project[] = [
     tags: ['Blender', 'OrcaSlicer'],
     theme: 'MA',
     category: 'MA',
+    ad: {
+      src: "/projects_media/3D_pen/3Dpen8.png",
+      alt: "3D printed pen",
+    },
     pageContent: [
       'Overview',
       'In the circumstances of the A4 How To Make (Almost) Anything class',
@@ -183,6 +191,10 @@ export const projects: Project[] = [
     tags: ['Cardboard', 'Draw.io', 'Cutting machine'],
     theme: 'MA',
     category: 'MA',
+    ad: {
+      src: '/projects_media/scarab/Scarab13.jpg',
+      alt: 'Cardboard scarab',
+    },
     pageContent: [
       'Overview',
       'For the A4 How To Make (Almost) Anything class I used the cutting machine to create a rhino scarab inspired by an image I found online.',
@@ -263,7 +275,7 @@ export const projects: Project[] = [
         src: '/projects_media/scarab/Scarab13.jpg',
         alt: 'Horn finishing detail',
       },
-      'I was supposed to cut two horns but only produced one, so the final creature is intentionally asymmetrical.',
+      'I was supposed to cut two horns but only produced one, so the final creature is unintentionally asymmetrical.',
     ],
     highlights: [
       'Created a highly layered cardboard form from simple 2D outlines.',
@@ -280,6 +292,10 @@ export const projects: Project[] = [
     tags: ['Biomaterials', 'Mycelium', 'Fabrication'],
     theme: 'DBLT',
     category: 'DBLT',
+    ad: {
+      src: '/projects_media/mycelium/mycelium9.jpg',
+      alt: 'Mycelium object baking',
+    },
     pageContent: [
       'Growing mycelium, the basics',
       'Step 1: Sterilize the tools so the mycelium is not overtaken by bacteria. I used alcohol on gloves, the bag, spoon, and mold.',
@@ -371,6 +387,10 @@ export const projects: Project[] = [
     tags: ['Biomaterials', 'Electronics', 'Arduino', 'Sensors'],
     theme: 'DBLT',
     category: 'DBLT',
+    ad: {
+      src: '/projects_media/scoby/scoby21.jpg',
+      alt: 'Scoby sensors',
+    },
     pageContent: [
       'Overview',
       'Symbiotic Culture of Bacteria and Yeast (SCOBY) is a cellulose-based biofilm produced while fermenting kombucha. By embedding conductive elements in a living sheet I can explore capacitive touch, bend, and heat sensing.',
@@ -536,6 +556,10 @@ void loop() {
     theme: 'CS',
     category: 'CS',
     github: 'https://github.com/ISDriss/web_workshop',
+    ad: {
+      src: '/projects_media/websocket.png',
+      alt: 'Websocket project',
+    },
     hasPage: false,
   },  
 
@@ -548,6 +572,10 @@ void loop() {
     tags: ['FPGA', 'Verilog'],
     theme: 'CS',
     category: 'CS',
+    ad: {
+      src: '/projects_media/FPGA.jpeg',
+      alt: 'FPGA project',
+    },
     hasPage: false,
     demo: 'https://futuristic-strand-e16.notion.site/Rapport-et-R-sultats-Projet-FPGA-2ae11ccf8fec81388064e4859e146bfd'
   },
@@ -561,6 +589,10 @@ void loop() {
     theme: 'MA',
     category: 'MA',
     demo: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
+    ad: {
+      src: '/projects_media/quickstarter.png',
+      alt: 'Quickstarter project',
+    },
     hasPage: false,
   }
 
