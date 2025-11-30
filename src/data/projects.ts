@@ -67,7 +67,7 @@ export type Project = {
   demo?: string;
   ad?: {
     src: string;
-    alt: string;
+    link?: string;
   };
   hasPage?: boolean;
   pageContent?: ProjectContentEntry[];
@@ -86,7 +86,7 @@ export const projects: Project[] = [
     category: 'MA',
     ad: {
       src: '/projects_media/glitching/BGlitch2.png',
-      alt: 'Glitching',
+      link: 'page',
     },
     pageContent: [
       'Objective: distort a 3D model blender file by altering the binary values for a workshop',
@@ -129,7 +129,7 @@ export const projects: Project[] = [
     category: 'MA',
     ad: {
       src: "/projects_media/3D_pen/3Dpen8.png",
-      alt: "3D printed pen",
+      link: 'page',
     },
     pageContent: [
       'Overview',
@@ -193,7 +193,7 @@ export const projects: Project[] = [
     category: 'MA',
     ad: {
       src: '/projects_media/scarab/Scarab13.jpg',
-      alt: 'Cardboard scarab',
+      link: 'page',
     },
     pageContent: [
       'Overview',
@@ -294,7 +294,7 @@ export const projects: Project[] = [
     category: 'DBLT',
     ad: {
       src: '/projects_media/mycelium/mycelium9.jpg',
-      alt: 'Mycelium object baking',
+      link: 'page',
     },
     pageContent: [
       'Growing mycelium, the basics',
@@ -389,7 +389,7 @@ export const projects: Project[] = [
     category: 'DBLT',
     ad: {
       src: '/projects_media/scoby/scoby21.jpg',
-      alt: 'Scoby sensors',
+      link: 'page',
     },
     pageContent: [
       'Overview',
@@ -558,7 +558,7 @@ void loop() {
     github: 'https://github.com/ISDriss/web_workshop',
     ad: {
       src: '/projects_media/websocket.png',
-      alt: 'Websocket project',
+      link: 'https://github.com/ISDriss/web_workshop',
     },
     hasPage: false,
   },  
@@ -574,7 +574,7 @@ void loop() {
     category: 'CS',
     ad: {
       src: '/projects_media/FPGA.jpeg',
-      alt: 'FPGA project',
+      link: 'https://futuristic-strand-e16.notion.site/Rapport-et-R-sultats-Projet-FPGA-2ae11ccf8fec81388064e4859e146bfd',
     },
     hasPage: false,
     demo: 'https://futuristic-strand-e16.notion.site/Rapport-et-R-sultats-Projet-FPGA-2ae11ccf8fec81388064e4859e146bfd'
@@ -591,7 +591,7 @@ void loop() {
     demo: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
     ad: {
       src: '/projects_media/quickstarter.png',
-      alt: 'Quickstarter project',
+      link: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
     },
     hasPage: false,
   }

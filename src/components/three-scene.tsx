@@ -3,11 +3,19 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useRouter } from 'next/navigation';
 import { projects } from '@/data/projects';
 
 export function ThreeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeAd, setActiveAd] = useState<{
+    title: string;
+    description: string;
+    link: string;
+    slug: string;
+  } | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -41,11 +49,18 @@ export function ThreeScene() {
     const adTextures = projects
       .filter((project) => project.ad?.src)
       .map((project) => {
-        const texture = textureLoader.load(project.ad!.src);
+        const ad = {
+          ...project.ad!,
+          link: project.ad?.link ?? 'page',
+          title: project.title,
+          description: project.description,
+          slug: project.slug,
+        };
+        const texture = textureLoader.load(ad.src);
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.center.set(0.5, 0.5);
-        return { texture, ad: project.ad! };
-      });
+        return { texture, ad };
+    });
     const pickRandomAdTexture = () => {
       if (!adTextures.length) return null;
       return adTextures[Math.floor(Math.random() * adTextures.length)];
@@ -209,19 +224,24 @@ export function ThreeScene() {
       size: [number, number] = [12, 8],
     ) => {
       const randomAd = pickRandomAdTexture();
-      const mat = new THREE.MeshStandardMaterial({
-        color: randomAd ? 0xffffff : 0x1ad3ff,
-        emissive: randomAd ? 0xffffff : 0x0f7cb0,
-        emissiveIntensity: randomAd ? 0.25 : 1.2,
-        metalness: 0.25,
-        roughness: 0.4,
-        transparent: true,
-        opacity: 0.95,
-        side: THREE.DoubleSide,
-      });
-      if (randomAd) {
-        mat.map = randomAd.texture;
-      }
+      const mat = randomAd
+        ? new THREE.MeshBasicMaterial({
+            map: randomAd.texture,
+            toneMapped: true,
+            transparent: false,
+            opacity: 1,
+            side: THREE.DoubleSide,
+          })
+        : new THREE.MeshStandardMaterial({
+            color: 0x1ad3ff,
+            emissive: 0x0f7cb0,
+            emissiveIntensity: 1.2,
+            metalness: 0.25,
+            roughness: 0.4,
+            transparent: false,
+            opacity: 1,
+            side: THREE.DoubleSide,
+          });
       billboardMaterials.push(mat);
       const geometry = new THREE.PlaneGeometry(size[0], size[1]);
       billboardGeometries.push(geometry);
@@ -233,6 +253,9 @@ export function ThreeScene() {
       board.receiveShadow = true;
       board.userData.normal = normal.clone();
       board.userData.size = size;
+      if (randomAd) {
+        board.userData.ad = randomAd.ad;
+      }
       scene.add(board);
       billboards.push(board);
 
@@ -330,16 +353,6 @@ export function ThreeScene() {
       cameraTransition.toFar = far;
     };
 
-    const restoreCamera = () => {
-      focusedBillboard = null;
-      startCameraTransition({
-        position: defaultCameraState.position,
-        target: defaultCameraState.target,
-        near: defaultCameraState.near,
-        far: defaultCameraState.far,
-      });
-    };
-
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     let focusedBillboard: THREE.Mesh | null = null;
@@ -357,6 +370,21 @@ export function ThreeScene() {
         far: Math.max(focusDistance * 10, defaultCameraState.far),
       });
       focusedBillboard = board;
+      const ad = board.userData.ad as
+        | { title: string; description: string; link: string; slug: string }
+        | undefined;
+      setActiveAd(ad ?? null);
+    };
+
+    const restoreCamera = () => {
+      focusedBillboard = null;
+      startCameraTransition({
+        position: defaultCameraState.position,
+        target: defaultCameraState.target,
+        near: defaultCameraState.near,
+        far: defaultCameraState.far,
+      });
+      setActiveAd(null);
     };
 
     Object.values(billboardPresets).forEach((group) => {
@@ -372,7 +400,21 @@ export function ThreeScene() {
       raycaster.setFromCamera(pointer, camera);
       const intersects = raycaster.intersectObjects(billboards, false);
       if (intersects.length) {
-        focusOnBillboard(intersects[0].object as THREE.Mesh);
+        const board = intersects[0].object as THREE.Mesh;
+        if (focusedBillboard && board === focusedBillboard) {
+          const ad = board.userData.ad as
+            | { title: string; description: string; link: string; slug: string }
+            | undefined;
+          if (ad?.link) {
+            if (ad.link === 'page') {
+              router.push(`/projects/${ad.slug}`);
+            } else {
+              window.open(ad.link, '_blank');
+            }
+            return;
+          }
+        }
+        focusOnBillboard(board);
         return;
       }
       if (focusedBillboard) {
@@ -474,6 +516,19 @@ export function ThreeScene() {
         ref={containerRef}
         className="relative h-full w-full overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br from-navy/70 via-electric/40 to-navy/80 shadow-[0_25px_80px_-35px_rgba(0,0,0,0.7)]"
       />
+      {activeAd && (
+        <div className="pointer-events-none absolute bottom-5 left-5 right-5 z-10 rounded-2xl border border-white/20 bg-navy/80 p-4 backdrop-blur">
+          <div className="text-white font-semibold text-sm uppercase tracking-[0.12em]">
+            {activeAd.title}
+          </div>
+          <div className="mt-1 text-white/80 text-sm leading-snug">{activeAd.description}</div>
+          <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-electric/80">
+            {activeAd.link === 'page'
+              ? activeAd.slug
+              : activeAd.link}
+          </div>
+        </div>
+      )}
       <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_18%_20%,rgba(255,100,3,0.24),transparent_35%),radial-gradient(circle_at_82%_12%,rgba(18,248,186,0.2),transparent_30%),radial-gradient(circle_at_65%_78%,rgba(255,225,0,0.14),transparent_36%)] blur-3xl" />
       <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-gradient-to-b from-white/10 via-transparent to-transparent" />
     </div>
