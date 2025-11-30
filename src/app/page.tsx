@@ -64,15 +64,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Three Scene Section */}
-      <section>
-        <div>
-              <div className="relative">
-                <ThreeScene />
-              </div>
-        </div>
-      </section>
-
       {/* Skills Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

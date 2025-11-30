@@ -6,7 +6,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useRouter } from 'next/navigation';
 import { projects } from '@/data/projects';
 
-export function ThreeScene() {
+type ThreeSceneProps = {
+  className?: string;
+};
+
+export function ThreeScene({ className }: ThreeSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeAd, setActiveAd] = useState<{
@@ -502,8 +506,13 @@ export function ThreeScene() {
     };
   }, []);
 
+  const rootClass =
+    className && className.trim().length > 0
+      ? className
+      : 'relative w-full h-96 md:h-[520px]';
+
   return (
-    <div className="relative w-full h-96 md:h-[520px]">
+    <div className={rootClass}>
       {isLoading && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-[32px] bg-navy/85 backdrop-blur">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-electric/30 border-t-electric" />
