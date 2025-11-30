@@ -85,7 +85,7 @@ export const projects: Project[] = [
     theme: 'MA',
     category: 'MA',
     ad: {
-      src: '/projects_media/glitching/BGlitch2.png',
+      src: '/projects_media/glitching/glitch_ad.png',
       link: 'page',
     },
     pageContent: [
@@ -128,7 +128,7 @@ export const projects: Project[] = [
     theme: 'MA',
     category: 'MA',
     ad: {
-      src: "/projects_media/3D_pen/3Dpen8.png",
+      src: "/projects_media/3D_pen/print_ad.png",
       link: 'page',
     },
     pageContent: [
@@ -192,7 +192,7 @@ export const projects: Project[] = [
     theme: 'MA',
     category: 'MA',
     ad: {
-      src: '/projects_media/scarab/Scarab13.jpg',
+      src: '/projects_media/scarab/scarab_ad.png',
       link: 'page',
     },
     pageContent: [
@@ -293,7 +293,7 @@ export const projects: Project[] = [
     theme: 'DBLT',
     category: 'DBLT',
     ad: {
-      src: '/projects_media/mycelium/mycelium9.jpg',
+      src: '/projects_media/mycelium/mycelium_ad.png',
       link: 'page',
     },
     pageContent: [
@@ -388,7 +388,7 @@ export const projects: Project[] = [
     theme: 'DBLT',
     category: 'DBLT',
     ad: {
-      src: '/projects_media/scoby/scoby21.jpg',
+      src: '/projects_media/scoby/scoby_ad.png',
       link: 'page',
     },
     pageContent: [
@@ -573,7 +573,7 @@ void loop() {
     theme: 'CS',
     category: 'CS',
     ad: {
-      src: '/projects_media/FPGA.jpeg',
+      src: '/projects_media/FPGA_ad.png',
       link: 'https://futuristic-strand-e16.notion.site/Rapport-et-R-sultats-Projet-FPGA-2ae11ccf8fec81388064e4859e146bfd',
     },
     hasPage: false,
@@ -590,7 +590,7 @@ void loop() {
     category: 'MA',
     demo: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
     ad: {
-      src: '/projects_media/quickstarter.png',
+      src: '/projects_media/quickstarter_ad.png',
       link: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
     },
     hasPage: false,
