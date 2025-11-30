@@ -10,6 +10,12 @@ type ThreeSceneProps = {
   className?: string;
 };
 
+type BillboardPreset = {
+  position: [number, number, number];
+  normal: [number, number, number];
+  size: [number, number];
+};
+
 export function ThreeScene({ className }: ThreeSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -69,7 +75,7 @@ export function ThreeScene({ className }: ThreeSceneProps) {
       if (!adTextures.length) return null;
       return adTextures[Math.floor(Math.random() * adTextures.length)];
     };
-    const billboardPresets = {
+    const billboardPresets: Record<string, BillboardPreset[]> = {
       mainBuilding: [
         {
           position: [2.0428859128498056, 69.88722776266901, 8.056453374139192],
