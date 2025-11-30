@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Github, Linkedin, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/button';
 import { ThreeScene } from '@/components/three-scene';
 

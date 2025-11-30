@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useRouter } from 'next/navigation';
 import { projects } from '@/data/projects';
 
@@ -504,7 +504,7 @@ export function ThreeScene({ className }: ThreeSceneProps) {
       canceled = true;
       setIsLoading(false);
     };
-  }, []);
+  }, [router]);
 
   const rootClass =
     className && className.trim().length > 0
