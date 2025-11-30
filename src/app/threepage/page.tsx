@@ -9,7 +9,7 @@ export default function TestPage() {
         <h1 className="text-4xl font-bold">Three.js Scene Page</h1>
         <p className="text-lg text-gray-300">
           I still consider this page a work in progress.
-          that's why the page is not linked from anywhere else.
+          that&apos;s why the page is not linked from anywhere else.
         </p>
       </div>
       <div className="w-full max-w-5xl">
