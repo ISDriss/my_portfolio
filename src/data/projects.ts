@@ -39,16 +39,22 @@ export const themes: Theme[] = [
   },
   {
     id: 'DBLT',
-    label: 'Design for biomaterials and low tech',
+    label: 'Design for biomaterials',
     description: 'Works relating to biomaterials and living things',
     color: 'green',
   },
   {
     id: 'CS',
-    label: 'Computer Science & Electronics',
+    label: 'Computer Science & Embedded Systems',
     description: 'Electronics, Networks and Programming',
     color: 'purple',
   },
+  {
+    id: 'CAD',
+    label: 'CAD & 3D modeling',
+    description: 'Projects focused on 3D modeling and design',
+    color: 'orange',
+  }
 ];
 
 export const themeLookup = themes.reduce<Record<string, Theme>>((acc, theme) => {
@@ -594,7 +600,74 @@ void loop() {
       link: 'https://www.kickstarter.com/projects/2046457781/quickstarter-tic-tac-cheers',
     },
     hasPage: false,
-  }
+  },
+
+  // Mind controlled robot
+  {
+    slug: 'mindbot',
+    title: 'Mind controlled robot',
+    description: 'Building an EEG-based brain-computer interface to control a robotic vehicle through thought, with VR as an immersive feedback channel.',
+    tags: ['BCI', 'EEG', 'Deep Learning', 'VR', 'Robotics'],
+    theme: 'CS',
+    category: 'CS',
+    github: 'https://github.com/ISDriss/Mindbot',
+    ad: {
+      src: '/projects_media/mindbot/Mindbot_poster-page-00001.jpg',
+      link: 'page',
+    },
+    pageContent: [
+      'Overview',
+      {
+        type: 'image',
+        src: '/projects_media/mindbot/Mindbot_poster-page-00001.jpg',
+        alt: 'project poster',
+      },
+      'Mindbot is an experimental prototype that connects brain activity to a physical robot. A Muse 2 EEG headband captures neural signals, a deep learning model running on a Python backend classifies the user\'s movement intentions in real time, and the predicted commands are sent wirelessly to an ESP32-controlled RC car. An ESP32-CAM module mounted on the car streams live video back, which can be viewed in a browser or through a VR headset for an immersive first-person perspective.',
+      {
+        type: 'image',
+        src: '/projects_media/mindbot/robot.webp',
+        alt: 'Mindbot system overview, RC car',
+      },
+      {
+        type: 'image',
+        src: '/projects_media/mindbot/POV_in_car.webp',
+        alt: 'VR POV',
+      },
+      'System architecture',
+      'The stack is split across three hardware nodes. The Muse 2 streams raw EEG over Bluetooth, picked up by muselsl on the host machine. A Python script feeds that live stream into EEGNet, a compact convolutional neural network designed for EEG classification, which outputs one of five commands: forward, reverse, left, right or stop. Those commands are sent over WebSocket to an ESP32 on the car, which drives the motor controller directly. A second ESP32-CAM node streams MJPEG video independently over the same local network.',
+      {
+        type: 'image',
+        src: '/projects_media/mindbot/blinks.png',
+        alt: 'Pipeline diagram - EEG acquisition, EEGNet classification and ESP32 control',
+      },
+      'The model',
+      'EEGNet was chosen for its lightweight footprint and strong performance on small EEG datasets. The training notebook (EEGNet_Training.ipynb) handles windowing the raw signal, applying bandpass filters, and outputting a model that BCI_predict.py loads at runtime for inference. The whole prediction-to-command loop runs without manual intervention once the three components (EEG stream, prediction script and ESP32) are live.',
+      'Research question',
+      'The project compares the EEG-VR control interface against a standard game controller across two dimensions: user performance (completion time, obstacle hits and track deviation) and user learning (how quickly performance improves across repetitions). The hypothesis is that EEG-based control starts slower but converges toward comparable performance after user adaptation.',
+      'Current state',
+      'The prototype is functional end-to-end but remains rough around the edges. Running it currently requires two or three terminals in parallel, and classification accuracy depends heavily on how well the model generalises to a new user\'s signal. The data collection protocol is fully documented, though sessions have not yet been run at scale. Next steps include improving model accuracy, streamlining the launch process into a single interface, and running the comparative experiment with participants.',
+    ],
+    highlights: [
+      'Built a functional end-to-end BCI prototype connecting a Muse 2 EEG headband to an ESP32-controlled RC car via a real-time EEGNet classification pipeline.',
+      'Implemented a WebSocket-based command layer and an ESP32-CAM video stream to enable live first-person feedback, with optional VR viewing.',
+      'Designed a data collection protocol and training notebook for EEGNet, laying the groundwork for a comparative study between EEG and traditional controller input.',
+    ],
+  },
+
+  //Bioprinter
+  {
+    slug: 'bioprinter',
+    title: 'Bioprinter',
+    description: 'Designing and building a custom syringe-based bioprinting head for the Cosmyx NOVA 3D printer, enabling low-cost extrusion of biomaterial inks for living structures.',
+    tags: ['DBLT', 'CAD', 'Biomaterials', '3D Printing'],
+    theme: 'DBLT',
+    category: 'DBLT',
+    demo: 'https://spot-freezer-7e6.notion.site/Design-d-une-t-te-de-Bio-impression-pour-l-imprimante-3D-Cosmyx-NOVA-2f5678be33bc807cba10facaf6355be2',
+    hasPage: false,
+    ad: {
+      src: '/projects_media/bioprinter/bioprinter_ad.png',
+    },
+  },
 
   //Add more here
 ];
