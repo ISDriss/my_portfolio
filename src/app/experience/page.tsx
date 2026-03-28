@@ -37,6 +37,23 @@ export default function ExperiencePage() {
       ],
       technologies: ['Python', 'Qt framework'],
     },
+    {
+      id: 3,
+      company: 'Vallourec',
+      position: 'Data Engineer Intern',
+      location: 'Meudon, France',
+      period: 'February - August 2026',
+      type: 'Full-time',
+      color: 'green',
+      achievements: [
+        'developed ETL pipelines on databricks to furnish a database for an in house data visualization tool',
+        'Analyzed and processed large datasets to support data-driven decision-making',
+        'Developed automated scripts to streamline data cleaning and preprocessing workflows',
+        'Collaborated with cross-functional teams to identify data requirements and deliver insights',
+        'Created visualizations and reports to communicate findings effectively',
+      ],
+      technologies: ['Python', 'Pandas', 'NumPy', 'Streamlit', 'Databricks'],
+    }
   ];
 
   const getColorClasses = (color: string) => {
