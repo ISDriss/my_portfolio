@@ -20,7 +20,6 @@ export default function HomePage() {
               </h1>
               <p className="text-xl text-white/80">
                 Passionate about prototyping new tools and innovative solutions.  
-                For a better tommorrow.
               </p>
               <div className="flex gap-4 pt-4">
                 <Link href="/projects">
@@ -92,7 +91,7 @@ export default function HomePage() {
               </div>
               <h3 className="mb-3 text-electric">3D modeling</h3>
               <p className="text-gray/80">
-                Solidworks & Blender
+                Solidworks, Fusion 360, Blender
               </p>
             </div>
           </div>
