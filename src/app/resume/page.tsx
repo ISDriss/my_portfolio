@@ -8,14 +8,15 @@ export default function ResumePage() {
   const skills = {
     'Frontend': ['Next.js', 'Tailwind CSS', 'HTML/CSS/JS'],
     'Backend': ['Python', 'Django'],
-    'Database': ['MySQL'],
-    'DevOps': ['Docker', 'AWS', 'CI/CD'],
-    'Tools': ['Git', 'VS Code', 'Jira', 'Figma', 'Postman', 'Linux'],
+    'Database': ['MySQL', 'Databricks'],
+    'DevOps': ['Docker', 'AWS', 'Gitlab CI/CD'],
+    'Tools': ['Git', 'VS Code', 'Jira', 'Figma', 'Postman', 'Linux', 'Arduino', 'Raspberry Pi', '3D Printing', 'CAD (Fusion 360/Solidworks)'],
   };
 
   const certifications = [
     'Design Thinker - dthinking academy (2022)',
-    'Amateur Radio Operator - ANFR (2025)'
+    'Amateur Radio Operator - ANFR (2025)',
+    'Karate - 1st Dan (2023)',
   ];
 
   return (
