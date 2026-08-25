@@ -40,19 +40,21 @@ export default function ExperiencePage() {
     {
       id: 3,
       company: 'Vallourec',
-      position: 'Data Engineer Intern',
+      position: 'Data Engineer & App developer Intern',
       location: 'Meudon, France',
       period: 'February - August 2026',
       type: 'Full-time',
       color: 'green',
       achievements: [
+        'Created a Mobile app on Tauri using Opencv to provide feedback to field technicians',
+        'Created an OpenCV computer vision model to detect defects on pipe connections',
         'developed ETL pipelines on databricks to furnish a database for an in house data visualization tool',
         'Analyzed and processed large datasets to support data-driven decision-making',
         'Developed automated scripts to streamline data cleaning and preprocessing workflows',
         'Collaborated with cross-functional teams to identify data requirements and deliver insights',
         'Created visualizations and reports to communicate findings effectively',
       ],
-      technologies: ['Python', 'Pandas', 'NumPy', 'Streamlit', 'Databricks'],
+      technologies: ['Python', 'SQL', 'Streamlit', 'Databricks', 'Tauri', 'OpenCV', "Rust", "Typescript", "React", "TailwindCSS"],
     }
   ];
 
