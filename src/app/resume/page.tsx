@@ -6,11 +6,11 @@ import { Badge } from '@/components/badge';
 export default function ResumePage() {
   const resumeUrl = '/resume.pdf';
   const skills = {
-    'Frontend': ['Next.js', 'Tailwind CSS', 'HTML/CSS/JS'],
-    'Backend': ['Python', 'Django'],
-    'Database': ['MySQL', 'Databricks'],
+    'Frontend': ['Next.js', 'React', 'Tailwind CSS', 'HTML/CSS/JS'],
+    'Backend': ['Python', 'Django', 'Rust'],
+    'Database': ['SQL', 'Databricks'],
     'DevOps': ['Docker', 'AWS', 'Gitlab CI/CD'],
-    'Tools': ['Git', 'VS Code', 'Jira', 'Figma', 'Postman', 'Linux', 'Arduino', 'Raspberry Pi', '3D Printing', 'CAD (Fusion 360/Solidworks)'],
+    'Tools': ['Git', 'VS Code', 'Jira', 'Tauri', 'Figma', 'Postman', 'Linux', 'Arduino', 'Raspberry Pi', '3D Printing', 'CAD (Fusion 360/Solidworks)'],
   };
 
   const certifications = [
@@ -103,10 +103,10 @@ export default function ResumePage() {
                     <h4 className="text-navy">Junior Developper</h4>
                     <p className="text-gray/70">Vallourec</p>
                   </div>
-                  <Badge className="bg-green/10 text-green border-0">2020 - 2021</Badge>
+                  <Badge className="bg-green/10 text-green border-0">2025 - 2026</Badge>
                 </div>
                 <ul className="space-y-1 text-gray/80">
-                  <li>• Created a tool from scratch for industrial sites in record time as CI/CD</li>
+                  <li>• Created multiple tools from scratch for industrial sites across different platforms</li>
                 </ul>
               </div>
               
