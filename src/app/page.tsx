@@ -47,11 +47,11 @@ export default function HomePage() {
                     style={{ clipPath: 'inset(-40px 0 0 0 round 999px)' }}
                   >
                     <Image
-                      src="/IS_solder.png"
+                      src="/IS_formal.png"
                       alt="Ilian Sebti portrait illustration"
                       fill
                       priority
-                      className="object-contain scale-150 translate-y-13 translate-x-3"
+                      className="object-contain scale-150 translate-y-[-20px]"
                       sizes="400px"
                     />
                   </div>
