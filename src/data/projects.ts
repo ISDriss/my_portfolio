@@ -659,7 +659,7 @@ void loop() {
     slug: 'bioprinter',
     title: 'Bioprinter',
     description: 'Designing and building a custom syringe-based bioprinting head for the Cosmyx NOVA 3D printer, enabling low-cost extrusion of biomaterial inks for living structures.',
-    tags: ['DBLT', 'CAD', 'Biomaterials', '3D Printing'],
+    tags: ['CAD', 'Biomaterials', '3D Printing'],
     theme: 'DBLT',
     category: 'DBLT',
     demo: 'https://spot-freezer-7e6.notion.site/Design-d-une-t-te-de-Bio-impression-pour-l-imprimante-3D-Cosmyx-NOVA-2f5678be33bc807cba10facaf6355be2',
@@ -669,5 +669,16 @@ void loop() {
     },
   },
 
+  //Punchline bag
+  {
+    slug: 'punching bag',
+    title: 'Punchline Bag',
+    description: 'Hackaton ESILV 02/09/2026 : sensitive machines',
+    tags: ['Hackaton', 'ESP32'],
+    theme: 'MA',
+    category: 'MA',
+    github: 'https://github.com/Aure3479/Punchline-Bag',
+  },
+  
   //Add more here
 ];
